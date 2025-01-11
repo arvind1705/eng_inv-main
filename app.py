@@ -10,7 +10,8 @@ app = Flask(__name__)
 class InvoicePDF(FPDF):
     def header(self):
         # Logo and header
-        self.image("logo.png", 10, 8, 33)
+         # Increase the logo size by adjusting the width and height
+        self.image("logo1.jpeg", 10, 8, 50, 45)  # Adjusted width and height
         self.set_font("Arial", "B", 15)
         self.cell(0, 10, "RAMESH ENGINEERING", align="C", ln=True)
         self.set_font("Arial", "", 10)
@@ -52,14 +53,14 @@ class InvoicePDF(FPDF):
         self.set_xy(10, 90)
         self.set_font("Arial", "B", 10)
         self.cell(95, 10, "Bill To:", ln=True)
-        self.set_xy(105, 90)
-        self.cell(95, 10, "Ship To:")
+        #self.set_xy(105, 90)
+        #self.cell(95, 10, "Ship To:")
 
         self.set_font("Arial", "", 10)
         self.set_xy(10, 100)
         self.multi_cell(95, 5, data["bill_to"])
-        self.set_xy(105, 100)
-        self.multi_cell(95, 5, data["ship_to"])
+       # self.set_xy(105, 100)
+       # self.multi_cell(95, 5, data["ship_to"])
 
         # Items table
         self.ln(10)
@@ -111,9 +112,20 @@ class InvoicePDF(FPDF):
         self.cell(30, 10, "Total:", 0, 0, "R")
         self.cell(30, 10, f"Rs.{total:.2f}", 0, 0, "R")
 
+        # display bank details
+        self.set_xy(10, y + 50)
+        self.set_font("Arial", "B", 10) 
+        self.cell(0, 10, "Bank Details:", ln=True)
+        self.set_font("Arial", "", 10)
+        self.cell(0, 5, "Bank Name: CANARA BANK", ln=True)
+        self.cell(0, 5, "A/C NAME: RAMESH ENGINEERING", ln=True)
+        self.cell(0, 5, "Account No: 04081010002140", ln=True)
+        self.cell(0, 5, "IFSC Code: CNRB0010651", ln=True)
+
+
         # Terms
         if "terms" in data and data["terms"]:
-            self.set_xy(10, y + 25)
+            self.set_xy(10, y + 100)
             self.set_font("Arial", "B", 10)
             self.cell(0, 10, "Terms and Conditions:", ln=True)
             self.set_font("Arial", "", 10)

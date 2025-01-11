@@ -154,21 +154,11 @@
                     <option value="12">12%</option>
                     <option value="18">18%</option>
                 </select>
-                <label>Invoice Type:</label>
-                <!-- <input type="number" name="item_tax_0" required> -->
-                <select name="inv_type_0" required>
-                    <option value="Original">Original</option>
-                    <option value="Duplicate">Duplicate</option>
-                </select>
-                
-
             </div>
         </div>
         <input type="hidden" name="item_count" value="1" id="item_count">
         <button type="button" onclick="addItem()">Add Item</button>
-
-        <!-- Replace with static terms -->
-<div class="form-group">
+        <div class="form-group">
             <h3>Bank details:</h3>
             <p>.A/C Name:RAMESH ENGINEERING</p>
             <p>. Bank Name: CANARA BANK</p>
@@ -176,7 +166,7 @@
             <p>. Account number:04081010002140</p>
                     </div>
 
-
+        <!-- Replace with static terms -->
         <div class="form-group">
             <h3>Terms and Conditions</h3>
             <p>1. Payment is due within 30 days from the date of invoice</p>
@@ -206,13 +196,8 @@
                 <input type="number" name="item_rate_${itemCount}" required>
                 <label>Tax (%):</label>
                 <select name="item_tax_${itemCount}" required>
-                    <option value="18">18%</option>
                     <option value="12">12%</option>
-                </select>
-                <label>Invoice Type:</label>
-                <select name="inv_type_${itemCount}" required>
-                    <option value="Original">Original</option>
-                    <option value="Duplicate">Duplicate</option>
+                    <option value="18">18%</option>
                 </select>
             `;
             itemsDiv.appendChild(newItem);
@@ -220,4 +205,4 @@
         }
     </script>
 </body>
-</html
+</html>
