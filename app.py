@@ -56,7 +56,7 @@ class InvoicePDF(FPDF):
 
         self.set_xy(15, 85)
         self.set_font("Arial", "B", 10)
-        self.cell(0, 5, f"EWAY Bill No: {data['eway_bill_no']}", align="L")
+        self.cell(0, 5, f"EWAY123 Bill No: {data['eway_bill_no']}", align="L")
 
         # Billing and Shipping info
         self.set_xy(10, 90)
