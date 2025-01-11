@@ -173,9 +173,7 @@ def generate():
         data = {
             "invoice_no": request.form["invoice_no"],
             "invoice_date": request.form["invoice_date"],
-            "due_date": request.form["due_date"],
             "bill_to": request.form["bill_to"],
-            "ship_to": request.form["ship_to"],
             "terms": request.form.get("terms", ""),
             "eway_bill_no": request.form["eway_bill_no"],
             "your_dc_no": request.form["your_dc_no"],
