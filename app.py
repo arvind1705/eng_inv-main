@@ -6,59 +6,76 @@ from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 
-terms = """
-1. Payment is due within 30 days from the date of invoice
-        2. Please make payment via bank transfer to the account details provided
-        3. Goods once sold cannot be returned
-        4. All disputes are subject to local jurisdiction only"""
 
 class InvoicePDF(FPDF):
+
     def header(self):
-        # Logo and header
-        self.image("logo1.jpeg", 0, 0, 50, 50)  # Adjusted width and height
-        self.set_font("Arial", "B", 20)
-        self.cell(0, 12, "RAMESH ENGINEERING", align="C", ln=True)
+        self.image("logo.jpeg", 10, -1, 50)
+        self.set_xy(70, 15)  # Changed from 10 to 15
+        self.set_font("Arial", "B", 12)
+        self.cell(0, 5, "RAMESH ENGINEERING", ln=True)
+        self.set_xy(70, 20)  # Changed from 15 to 20
         self.set_font("Arial", "", 10)
-        self.cell(
-            0, 5, "NO.2, GROUND FLOOR, 1ST MAIN ROAD, 2ND CROSS,", align="C", ln=True
-        )
-        self.cell(0, 5, "2ND PHASE PEENYA, Bengaluru (Bangalore)", align="C", ln=True)
-        self.cell(0, 5, "GSTIN: 29ACXPV3219P1ZD", align="C", ln=True)
-        self.ln(10)
+        self.cell(0, 5, "NO.2, GROUND FLOOR, 1ST MAIN ROAD, 2ND CROSS,", ln=True)
+        self.set_xy(70, 25)  # Changed from 20 to 25
+        self.cell(0, 5, "2ND PHASE PEENYA, Bengaluru (Bangalore)", ln=True)
+        self.set_xy(70, 30)  # Changed from 25 to 30
+        self.cell(0, 5, "GSTIN: 29ACXPV3219P1ZD", ln=True)
+        self.ln(20)
 
     def footer(self):
-        self.set_y(-30)
+        terms = """
+1. Goods once sold cannot be returned
+2. All disputes are subject to local jurisdiction only"""
+        bank = """
+Bank Name: CANARA BANK
+A/C NAME: RAMESH ENGINEERING
+Account No: 04081010002140
+IFSC Code: CNRB0010651"""
+        self.set_y(-35)
         self.set_font("Arial", "B", 10)
-        self.cell(0, 10, "Terms and Conditions:", ln=True)
+        self.cell(0, 10, "Terms and Conditions:", ln=0)
         self.set_font("Arial", "", 10)
-        self.multi_cell(0, 5, terms)
+        self.set_y(-30)
+        self.multi_cell(100, 5, terms)
+
+        self.set_xy(110, -35)
+        self.set_font("Arial", "B", 10)
+        self.cell(0, 10, "Bank Details:", ln=0)
+        self.set_font("Arial", "", 10)
+        self.set_xy(110, -30)
+        self.multi_cell(0, 5, bank)
 
     def create_invoice(self, data):
         self.add_page()
 
         # Invoice details box
+        self.set_xy(10, 45)  # Added this line to move text up
         self.set_font("Arial", "B", 12)
         self.cell(0, 10, "TAX INVOICE", align="C", ln=True)
         self.set_font("Arial", "", 10)
 
         # Invoice info box
         self.set_fill_color(200, 200, 200)
-        self.rect(10, 60, 190, 15, "DF")
-        self.set_xy(15, 65)
+        self.rect(10, 60, 190, 10, "DF")
+        self.set_xy(
+            15, 63
+        )  # Adjusted y-coordinate to place text in the middle vertically
         self.set_font("Arial", "B", 10)
         self.cell(0, 5, f"Invoice No: {data['invoice_no']}", align="L")
-        self.set_xy(35, 65)
-        self.cell(0, 5, f"Invoice Date: {data['invoice_date']}", align="C")
-        self.set_xy(170, 65)
+        self.set_xy(105, 63)  # Adjusted x-coordinate to center the text horizontally
+        self.cell(0, 5, f"Invoice Date: {data['invoice_date']}", align="L")
 
-        # Your DC No and EWay Bill Box    
+        # Your DC No and EWay Bill Box
         self.set_fill_color(200, 200, 200)
-        self.rect(10, 80, 190, 10, "DF")
-        self.set_xy(15, 85)
+        self.rect(10, 75, 190, 10, "DF")
+        self.set_xy(15, 77)
         self.set_font("Arial", "B", 10)
         self.cell(0, 5, f"Your DC No: {data['your_dc_no']}", align="L")
-        self.set_xy(150, 85)
-        self.cell(0, 5, f"EWAY Bill No: {data['eway_bill_no']}", align="R")
+        self.set_xy(
+            105, 77
+        )  # Adjusted x-coordinate to align vertically with the above box
+        self.cell(0, 5, f"EWAY Bill No: {data['eway_bill_no']}", align="L")
 
         # Billing and Shipping info
         self.set_xy(10, 90)
@@ -75,7 +92,7 @@ class InvoicePDF(FPDF):
 
         # Table headers
         self.set_fill_color(200, 200, 200)
-        headers = ["S.No", "Description", "Qty", "Rate", "Tax%", "Amount"]
+        headers = ["S.No", "Description", "Qty", "Rate", "Tax (%)", "Amount"]
         widths = [10, 70, 20, 30, 20, 40]
 
         self.set_font("Arial", "B", 10)
@@ -133,16 +150,16 @@ class InvoicePDF(FPDF):
         self.cell(30, 10, "Total:", 0, 0, "R")
         self.cell(30, 10, f"Rs.{total:.2f}", 0, 0, "R")
 
-        # display bank details
-        self.set_xy(10, y + 5)
-        self.set_font("Arial", "B", 10) 
-        self.cell(0, 10, "Bank Details:", ln=True)
-        self.set_font("Arial", "", 10)
-        self.cell(0, 5, "Bank Name: CANARA BANK", ln=True)
-        self.cell(0, 5, "A/C NAME: RAMESH ENGINEERING", ln=True)
-        self.cell(0, 5, "Account No: 04081010002140", ln=True)
-        self.cell(0, 5, "IFSC Code: CNRB0010651", ln=True)
-       
+        # # display bank details
+        # self.set_xy(10, y + 5)
+        # self.set_font("Arial", "B", 10)
+        # self.cell(0, 10, "Bank Details:", ln=1)
+        # self.set_font("Arial", "", 10)
+        # self.cell(0, 5, "Bank Name: CANARA BANK", ln=True)
+        # self.cell(0, 5, "A/C NAME: RAMESH ENGINEERING", ln=True)
+        # self.cell(0, 5, "Account No: 04081010002140", ln=True)
+        # self.cell(0, 5, "IFSC Code: CNRB0010651", ln=True)
+
 
 @app.route("/")
 def index():
@@ -187,8 +204,8 @@ def generate():
         return return_data
     finally:
         pass
-      # if os.path.exists(pdf_path):
-            # os.remove(pdf_path)
+    # if os.path.exists(pdf_path):
+    # os.remove(pdf_path)
 
 
 if __name__ == "__main__":
