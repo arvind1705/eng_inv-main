@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+    </style>
+</head>
+<body>
+    <h1>Invoice</h1>
+    <p><strong>Invoice No:</strong> {{ data.invoice_no }}</p>
+    <p><strong>Invoice Date:</strong> {{ data.invoice_date }}</p>
+    <p><strong>Due Date:</strong> {{ data.due_date }}</p>
+    
+    <h3>Bill To:</h3>
+    <p>{{ data.bill_to }}</p>
+
+    <h3>Ship To:</h3>
+    <p>{{ data.ship_to }}</p>
+
+    <h3>Items:</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Description</th>
+                <th>Quantity</th>
+                <th>Rate</th>
+                <th>Tax (%)</th>
+                <th>Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in data.items %}
+            <tr>
+                <td>{{ item.description }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>{{ item.rate }}</td>
+                <td>{{ item.tax }}</td>
+                <td>{{ (item.quantity | float * item.rate | float * (1 + item.tax | float / 100)) | round(2) }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h3>Terms and Conditions:</h3>
+    <p>{{ data.terms }}</p>
+</body>
+</html>
