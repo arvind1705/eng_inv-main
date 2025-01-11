@@ -11,9 +11,9 @@ class InvoicePDF(FPDF):
     def header(self):
         # Logo and header
          # Increase the logo size by adjusting the width and height
-        self.image("logo1.jpeg", 10, 8, 50, 45)  # Adjusted width and height
-        self.set_font("Arial", "B", 15)
-        self.cell(0, 10, "RAMESH ENGINEERING", align="C", ln=True)
+        self.image("logo1.jpeg", 0, 0, 50, 50)  # Adjusted width and height
+        self.set_font("Arial", "B", 20)
+        self.cell(0, 12, "RAMESH ENGINEERING", align="C", ln=True)
         self.set_font("Arial", "", 10)
         self.cell(
             0, 5, "NO.2, GROUND FLOOR, 1ST MAIN ROAD, 2ND CROSS,", align="C", ln=True
@@ -39,15 +39,21 @@ class InvoicePDF(FPDF):
         self.set_xy(35, 65)
         self.cell(0, 5, f"Invoice Date: {data['invoice_date']}", align="C")
         self.set_xy(170, 65)
-        self.cell(0, 5, f"Due Date: {data['due_date']}", align="R")
-        self.set_font("Arial", "", 10)
+       
+
+        # Your Invoice No
+        self.set_fill_color(200, 200, 200)
+        self.rect(10, 80, 190, 10, "DF")
+        self.set_xy(15, 85)
+        self.set_font("Arial", "B", 10)
+        self.cell(0, 5, f"Your Invoice No: {data['Your Invoice No']}", align="L")
 
         # EWay Bill Box
         self.set_fill_color(200, 200, 200)
         self.rect(10, 80, 190, 10, "DF")
         self.set_xy(15, 85)
         self.set_font("Arial", "B", 10)
-        self.cell(0, 5, f"EWAY Bill No: {data['eway_bill_no']}", align="L")
+        self.cell(0, 5, f"EWAY Bill No: {data['eway_bill_no']}", align="R")
 
         # Billing and Shipping info
         self.set_xy(10, 90)
@@ -113,7 +119,7 @@ class InvoicePDF(FPDF):
         self.cell(30, 10, f"Rs.{total:.2f}", 0, 0, "R")
 
         # display bank details
-        self.set_xy(10, y + 10)
+        self.set_xy(10, y + 5)
         self.set_font("Arial", "B", 10) 
         self.cell(0, 10, "Bank Details:", ln=True)
         self.set_font("Arial", "", 10)
@@ -125,7 +131,7 @@ class InvoicePDF(FPDF):
 
         # Terms
         if "terms" in data and data["terms"]:
-            self.set_xy(10, y + 50)
+            self.set_xy(10, y + 30)
             self.set_font("Arial", "B", 10)
             self.cell(0, 10, "Terms and Conditions:", ln=True)
             self.set_font("Arial", "", 10)
