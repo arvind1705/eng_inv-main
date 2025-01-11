@@ -120,14 +120,8 @@ class InvoicePDF(FPDF):
         self.set_font("Arial", "B", 10)
         self.cell(30, 10, "Total:", 0, 0, "R")
         self.cell(30, 10, f"Rs.{total:.2f}", 0, 0, "R")
+
         
-        #Bank details
-         if "bank_details" in data and data["bank_details"]:
-            self.set_xy(10, y + 25)
-            self.set_font("Arial", "B", 10)
-            self.cell(0, 10, "Bank details:", ln=True)
-            self.set_font("Arial", "", 10)
-            self.multi_cell(0, 5, data["terms"])
 
 
         # Terms
