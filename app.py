@@ -6,11 +6,15 @@ from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 
+terms = """
+1. Payment is due within 30 days from the date of invoice
+        2. Please make payment via bank transfer to the account details provided
+        3. Goods once sold cannot be returned
+        4. All disputes are subject to local jurisdiction only"""
 
 class InvoicePDF(FPDF):
     def header(self):
         # Logo and header
-         # Increase the logo size by adjusting the width and height
         self.image("logo1.jpeg", 0, 0, 50, 50)  # Adjusted width and height
         self.set_font("Arial", "B", 20)
         self.cell(0, 12, "RAMESH ENGINEERING", align="C", ln=True)
@@ -21,6 +25,13 @@ class InvoicePDF(FPDF):
         self.cell(0, 5, "2ND PHASE PEENYA, Bengaluru (Bangalore)", align="C", ln=True)
         self.cell(0, 5, "GSTIN: 29ACXPV3219P1ZD", align="C", ln=True)
         self.ln(10)
+
+    def footer(self):
+        self.set_y(-30)
+        self.set_font("Arial", "B", 10)
+        self.cell(0, 10, "Terms and Conditions:", ln=True)
+        self.set_font("Arial", "", 10)
+        self.multi_cell(0, 5, terms)
 
     def create_invoice(self, data):
         self.add_page()
@@ -39,34 +50,24 @@ class InvoicePDF(FPDF):
         self.set_xy(35, 65)
         self.cell(0, 5, f"Invoice Date: {data['invoice_date']}", align="C")
         self.set_xy(170, 65)
-       
 
-        # Your Invoice No
+        # Your DC No and EWay Bill Box    
         self.set_fill_color(200, 200, 200)
         self.rect(10, 80, 190, 10, "DF")
         self.set_xy(15, 85)
         self.set_font("Arial", "B", 10)
-        self.cell(0, 5, f"Your Invoice No: {data['Your Invoice No']}", align="L")
-
-        # EWay Bill Box
-        self.set_fill_color(200, 200, 200)
-        self.rect(10, 80, 190, 10, "DF")
-        self.set_xy(15, 85)
-        self.set_font("Arial", "B", 10)
+        self.cell(0, 5, f"Your DC No: {data['your_dc_no']}", align="L")
+        self.set_xy(150, 85)
         self.cell(0, 5, f"EWAY Bill No: {data['eway_bill_no']}", align="R")
 
         # Billing and Shipping info
         self.set_xy(10, 90)
         self.set_font("Arial", "B", 10)
         self.cell(95, 10, "Bill To:", ln=True)
-        #self.set_xy(105, 90)
-        #self.cell(95, 10, "Ship To:")
 
         self.set_font("Arial", "", 10)
         self.set_xy(10, 100)
         self.multi_cell(95, 5, data["bill_to"])
-       # self.set_xy(105, 100)
-       # self.multi_cell(95, 5, data["ship_to"])
 
         # Items table
         self.ln(10)
@@ -74,8 +75,8 @@ class InvoicePDF(FPDF):
 
         # Table headers
         self.set_fill_color(200, 200, 200)
-        headers = ["Description", "Qty", "Rate", "Tax%", "Amount"]
-        widths = [80, 20, 30, 20, 40]
+        headers = ["S.No", "Description", "Qty", "Rate", "Tax%", "Amount"]
+        widths = [10, 70, 20, 30, 20, 40]
 
         self.set_font("Arial", "B", 10)
         x = 10
@@ -89,27 +90,41 @@ class InvoicePDF(FPDF):
         y = self.get_y() + 10
         total = 0
 
-        for item in data["items"]:
+        for idx, item in enumerate(data["items"], start=1):
             x = 10
             amount = item["quantity"] * item["rate"]
             tax_amount = amount * (item["tax"] / 100)
             total_amount = amount + tax_amount
             total += total_amount
 
+            if y > 260:  # Check if the y-coordinate exceeds the page height
+                self.add_page()
+                y = 50  # Reset y-coordinate for the new page, leaving space for header
+                x = 10  # Reset x-coordinate for the new page
+                self.set_fill_color(200, 200, 200)
+                for i, header in enumerate(headers):
+                    self.set_xy(x, y)
+                    self.cell(widths[i], 10, header, 1, 0, "C", True)
+                    x += widths[i]
+                y += 10
+
             self.set_xy(x, y)
-            self.cell(widths[0], 10, item["description"], 1)
+            self.cell(widths[0], 10, str(idx), 1, 0, "C")
             x += widths[0]
             self.set_xy(x, y)
-            self.cell(widths[1], 10, str(item["quantity"]), 1, 0, "C")
+            self.cell(widths[1], 10, item["description"], 1)
             x += widths[1]
             self.set_xy(x, y)
-            self.cell(widths[2], 10, f"Rs.{item['rate']:.2f}", 1, 0, "R")
+            self.cell(widths[2], 10, str(item["quantity"]), 1, 0, "C")
             x += widths[2]
             self.set_xy(x, y)
-            self.cell(widths[3], 10, f"{item['tax']}%", 1, 0, "C")
+            self.cell(widths[3], 10, f"Rs.{item['rate']:.2f}", 1, 0, "R")
             x += widths[3]
             self.set_xy(x, y)
-            self.cell(widths[4], 10, f"Rs.{total_amount:.2f}", 1, 0, "R")
+            self.cell(widths[4], 10, f"{item['tax']}%", 1, 0, "C")
+            x += widths[4]
+            self.set_xy(x, y)
+            self.cell(widths[5], 10, f"Rs.{total_amount:.2f}", 1, 0, "R")
             y += 10
 
         # Total
@@ -127,16 +142,7 @@ class InvoicePDF(FPDF):
         self.cell(0, 5, "A/C NAME: RAMESH ENGINEERING", ln=True)
         self.cell(0, 5, "Account No: 04081010002140", ln=True)
         self.cell(0, 5, "IFSC Code: CNRB0010651", ln=True)
-
-
-        # Terms
-        if "terms" in data and data["terms"]:
-            self.set_xy(10, y + 30)
-            self.set_font("Arial", "B", 10)
-            self.cell(0, 10, "Terms and Conditions:", ln=True)
-            self.set_font("Arial", "", 10)
-            self.multi_cell(0, 5, data["terms"])
-
+       
 
 @app.route("/")
 def index():
@@ -155,6 +161,7 @@ def generate():
             "ship_to": request.form["ship_to"],
             "terms": request.form.get("terms", ""),
             "eway_bill_no": request.form["eway_bill_no"],
+            "your_dc_no": request.form["your_dc_no"],
             "items": [],
         }
         invoice_no = request.form["invoice_no"]
