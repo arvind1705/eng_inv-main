@@ -125,7 +125,7 @@ class InvoicePDF(FPDF):
 
         # Terms
         if "terms" in data and data["terms"]:
-            self.set_xy(10, y + 20)
+            self.set_xy(10, y + 50)
             self.set_font("Arial", "B", 10)
             self.cell(0, 10, "Terms and Conditions:", ln=True)
             self.set_font("Arial", "", 10)
