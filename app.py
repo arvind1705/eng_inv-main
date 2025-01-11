@@ -113,7 +113,7 @@ class InvoicePDF(FPDF):
         self.cell(30, 10, f"Rs.{total:.2f}", 0, 0, "R")
 
         # display bank details
-        self.set_xy(10, y + 50)
+        self.set_xy(10, y + 10)
         self.set_font("Arial", "B", 10) 
         self.cell(0, 10, "Bank Details:", ln=True)
         self.set_font("Arial", "", 10)
@@ -125,7 +125,7 @@ class InvoicePDF(FPDF):
 
         # Terms
         if "terms" in data and data["terms"]:
-            self.set_xy(10, y + 100)
+            self.set_xy(10, y + 20)
             self.set_font("Arial", "B", 10)
             self.cell(0, 10, "Terms and Conditions:", ln=True)
             self.set_font("Arial", "", 10)
