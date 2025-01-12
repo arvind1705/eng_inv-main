@@ -22,10 +22,10 @@ class InvoicePDF(FPDF):
         self.cell(0, 5, "RAMESH ENGINEERING", ln=True)
         self.set_font("Arial", "", 10)
         address_lines = [
-            "NO.2, GROUND FLOOR, 1ST MAIN ROAD, 2ND CROSS,",
-            "2ND PHASE PEENYA, Bengaluru (Bangalore)",
+            "No.2, Ground Floor, 1st Main Road, 2nd Cross,",
+            "2nd Phase Peenya, Bengaluru (Bangalore) - 560058",
             "GSTIN: 29ACXPV3219P1ZD",
-            "Phone: +91-9448073832",
+            "Phone: +91-9448073832, +91-9449444452",
         ]
         y = 20
         for line in address_lines:
