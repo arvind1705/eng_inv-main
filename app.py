@@ -268,7 +268,7 @@ IFSC Code: CNRB0010651"""
         self.set_xy(15, rect_y + 2)
         self.set_font("Arial", "", 10)
         self.multi_cell(
-            95, line_height, f"IN WORDS: {total_in_words}", 0, "L"
+            95, line_height, f"In Words: {total_in_words}", 0, "L"
         )
 
         # Add "FOR RAMESH ENGINEERING" below the total
