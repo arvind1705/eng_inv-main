@@ -193,8 +193,8 @@ IFSC Code: CNRB0010651"""
 
         # Compute tax details
         taxable_amount = total / (1 + gst_tax_rate / 100)
-        cgst = taxable_amount * 0.06
-        sgst = taxable_amount * 0.06
+        cgst = taxable_amount * (gst_tax_rate / 2)
+        sgst = taxable_amount * (gst_tax_rate / 2)
 
         # Horizontal positions for labels and values
         x_label = 120  # X-coordinate for labels
