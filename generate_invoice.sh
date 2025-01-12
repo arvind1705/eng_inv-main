@@ -2,6 +2,11 @@
 
 # Parameters
 item_count=$1
+if [ -z "$2" ]; then
+    output_file="/Users/aravind/Desktop/INV12345.pdf"
+else
+    output_file="/Users/aravind/Desktop/INV12345_$2.pdf"
+fi
 invoice_no="INV12345"
 invoice_date="2025-01-12"
 bill_to="Aravind G, 
@@ -14,7 +19,6 @@ terms="Net 30"
 eway_bill_no="EBN1234567890"
 your_dc_no="DC987654321"
 tax_rate=18
-output_file="/Users/aravind/Desktop/INV12345.pdf"
 
 # Start the curl command
 curl_command="curl -X POST http://127.0.0.1:8000/generate \
@@ -33,8 +37,8 @@ descriptions=("Widget A" "Widget B" "Widget C" "Widget D" "Widget E")
 # Loop over the item entries
 for ((i=0; i<item_count; i++)); do
     description=${descriptions[$RANDOM % ${#descriptions[@]}]}
-    quantity=$((RANDOM % 50 + 1))  # Random quantity between 1 and 10
-    rate=$((RANDOM % 1000 + 1))     # Random rate between 1 and 100
+    quantity=$((RANDOM % 50 + 1))  # Random quantity between 1 and 50
+    rate=$((RANDOM % 1000 + 1))     # Random rate between 1 and 1000
     
     curl_command+=" -d 'item_description_$i=$description' \
 -d 'item_quantity_$i=$quantity' \

@@ -132,7 +132,7 @@ IFSC Code: CNRB0010651"""
             total_amount = amount + tax_amount
             total += total_amount
 
-            if y > 260:  # Adjusted to leave space for footer. Changed from 240 to 260
+            if y > 250:  # Adjusted to leave space for footer. Changed from 250 to 260
                 self.add_page()
                 y = 50
                 x = 10
