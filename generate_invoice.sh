@@ -2,19 +2,22 @@
 
 # Parameters
 item_count=$1
-if [ -z "$2" ]; then
-    output_file="/Users/aravind/Desktop/INV12345.pdf"
+if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "cygwin" ]]; then
+    desktop_path=$(echo "$USERPROFILE\\Desktop" | sed 's/\\/\//g')
 else
-    output_file="/Users/aravind/Desktop/INV12345_$2.pdf"
+    desktop_path=$(eval echo ~/Desktop)
+fi
+if [ -z "$2" ]; then
+    output_file="$desktop_path/INV12345.pdf"
+else
+    output_file="$desktop_path/INV12345_$2.pdf"
 fi
 invoice_no="INV12345"
 invoice_date="2025-01-12"
-bill_to="Aravind G, 
-No.331, 10th A main road, 
-Manjunath Nagar, Basaveshwaranagar, 
-WOC road, Bengaluru - 560010
-Karnataka, 
-India"
+bill_to="ABC Corporation, 
+123 Main St,
+Springfield, IL 62701
+USA"
 terms="Net 30"
 eway_bill_no="EBN1234567890"
 your_dc_no="DC987654321"
