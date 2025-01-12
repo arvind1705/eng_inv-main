@@ -125,8 +125,6 @@
         <div class="form-group">
             <label>Your Dc No:</label>
             <input type="text" name="your_dc_no" required>
-            </div>            
-            
         </div>
         <div class="form-group">
             <label>Invoice Date:</label>
@@ -135,6 +133,13 @@
         <div class="form-group">
             <label>Bill To:</label>
             <textarea name="bill_to" required></textarea>
+        </div>
+        <div class="form-group">
+            <label>Tax Rate (%):</label>
+            <select name="tax_rate" required>
+                <option value="12">12%</option>
+                <option value="18">18%</option>
+            </select>
         </div>
         
         <h3>Items</h3>
@@ -146,12 +151,6 @@
                 <input type="number" name="item_quantity_0" required>
                 <label>Rate:</label>
                 <input type="number" name="item_rate_0" required>
-                <label>Tax (%):</label>
-                <!-- <input type="number" name="item_tax_0" required> -->
-                <select name="item_tax_0" required>
-                    <option value="12">12%</option>
-                    <option value="18">18%</option>
-                </select>
             </div>
         </div>
         <input type="hidden" name="item_count" value="1" id="item_count">
@@ -162,9 +161,8 @@
             <p>. Bank Name: CANARA BANK</p>
             <p>. IFSC Code:CNRB0010651</p>
             <p>. Account number:04081010002140</p>
-                    </div>
+        </div>
 
-        <!-- Replace with static terms -->
         <div class="form-group">
             <h3>Terms and Conditions</h3>
             <p>1. Payment is due within 30 days from the date of invoice</p>
@@ -192,11 +190,6 @@
                 <input type="number" name="item_quantity_${itemCount}" required>
                 <label>Rate:</label>
                 <input type="number" name="item_rate_${itemCount}" required>
-                <label>Tax (%):</label>
-                <select name="item_tax_${itemCount}" required>
-                    <option value="12">12%</option>
-                    <option value="18">18%</option>
-                </select>
             `;
             itemsDiv.appendChild(newItem);
             document.getElementById('item_count').value = ++itemCount;

@@ -54,6 +54,7 @@ IFSC Code: CNRB0010651"""
     def create_invoice(self, data):
         self.add_font("DejaVu", "", "DejaVuSansCondensed.ttf", uni=True)
         self.add_page()
+        gst_tax_rate = int(data["tax_rate"]) / 2
 
         # Invoice details box
         self.set_xy(10, 45)
@@ -117,7 +118,7 @@ IFSC Code: CNRB0010651"""
         for idx, item in enumerate(data["items"], start=1):
             x = 10
             amount = item["quantity"] * item["rate"]
-            tax_amount = amount * (item["tax"] / 100)
+            tax_amount = amount * (int(data["tax_rate"]) / 100)
             total_amount = amount + tax_amount
             total += total_amount
 
@@ -147,7 +148,7 @@ IFSC Code: CNRB0010651"""
             self.cell(widths[3], 10, f"{rs}{item['rate']:.2f}", 1, 0, "C")
             x += widths[3]
             self.set_xy(x, y)
-            self.cell(widths[4], 10, f"{item['tax']}%", 1, 0, "C")
+            self.cell(widths[4], 10, f"{data['tax_rate']}%", 1, 0, "C")
             x += widths[4]
             self.set_xy(x, y)
             self.set_font("DejaVu", "", 10)
@@ -169,25 +170,25 @@ IFSC Code: CNRB0010651"""
         y_start = y + 5  # Initial Y-coordinate
 
         # Display Taxable Amount
-        self.set_xy(x_label, y_start)
+        self.set_xy(x_label - 10, y_start)
         self.set_font("Arial", "B", 10)
-        self.cell(40, line_height, "Taxable Amount", 1, 0, "L")
+        self.cell(50, line_height, "Taxable Amount", 1, 0, "L")
         self.set_font("DejaVu", "", 10)
-        self.cell(30, line_height, f"₹ {taxable_amount:.2f}", 1, 0, "R")
+        self.cell(40, line_height, f"₹ {taxable_amount:.2f}", 1, 0, "R")
 
         # Display CGST
-        self.set_xy(x_label, y_start + line_height)
+        self.set_xy(x_label - 10, y_start + line_height)
         self.set_font("Arial", "B", 10)
-        self.cell(40, line_height, "CGST @6%", 1, 0, "L")
+        self.cell(50, line_height, f"CGST @{gst_tax_rate}%", 1, 0, "L")
         self.set_font("DejaVu", "", 10)
-        self.cell(30, line_height, f"₹ {cgst:.2f}", 1, 0, "R")
+        self.cell(40, line_height, f"₹ {cgst:.2f}", 1, 0, "R")
 
         # Display SGST
-        self.set_xy(x_label, y_start + 2 * line_height)
+        self.set_xy(x_label - 10, y_start + 2 * line_height)
         self.set_font("Arial", "B", 10)
-        self.cell(40, line_height, "SGST @6%", 1, 0, "L")
+        self.cell(50, line_height, f"SGST @{gst_tax_rate}%", 1, 0, "L")
         self.set_font("DejaVu", "", 10)
-        self.cell(30, line_height, f"₹ {sgst:.2f}", 1, 0, "R")
+        self.cell(40, line_height, f"₹ {sgst:.2f}", 1, 0, "R")
 
         # Display Total in Rectangle
         total_in_words = (
@@ -198,27 +199,36 @@ IFSC Code: CNRB0010651"""
         )
         total_in_words = total_in_words.title().replace("-", " ")
 
+        # Calculate the height of the rectangle based on the number of lines in total words
+        total_words_lines = self.multi_cell(
+            95,
+            line_height,
+            f"Total Amount (in words): {total_in_words}",
+            split_only=True,
+        )
+        rect_height = max(10, len(total_words_lines) * line_height + 4)
+
         # Rectangle for Total Amount and Words
-        rect_y = y_start + 3 * line_height + 5
-        rect_height = 12
+        rect_y = y_start + 3 * line_height + 4
         self.set_xy(10, rect_y)
         self.set_font("Arial", "B", 10)
+        self.set_line_width(0.8)  # Slightly thicker top and bottom borders
         self.cell(
-            190, rect_height, "", border=1
-        )  # Draw rectangle with all borders
+            190, rect_height, "", border="TB"
+        )  # Draw rectangle with top and bottom borders only
 
         # Total Label and Value (inside the rectangle)
-        self.set_xy(120, rect_y + 5)
+        self.set_xy(120, rect_y + (rect_height - line_height) / 2)
         self.set_font("Arial", "B", 12)
         self.cell(40, line_height, "TOTAL:", 0, 0, "L")  # Bold label "TOTAL:"
         self.set_font("DejaVu", "", 12)
         self.cell(30, line_height, f"₹ {total:.2f}", 0, 0, "R")
 
         # Total in Words (inside the rectangle, on the same line as total amount)
-        self.set_xy(15, rect_y + 5)
+        self.set_xy(15, rect_y + 2)
         self.set_font("Arial", "", 10)
-        self.cell(
-            0, line_height, f"Total Amount (in words): {total_in_words}", 0, 0, "L"
+        self.multi_cell(
+            95, line_height, f"Total Amount (in words): {total_in_words}", 0, "L"
         )
 
 
@@ -238,6 +248,7 @@ def generate():
             "terms": request.form.get("terms", ""),
             "eway_bill_no": request.form["eway_bill_no"],
             "your_dc_no": request.form["your_dc_no"],
+            "tax_rate": request.form["tax_rate"],
             "items": [],
         }
         invoice_no = request.form["invoice_no"]
@@ -251,7 +262,6 @@ def generate():
                     "description": request.form[f"item_description_{i}"],
                     "quantity": int(request.form[f"item_quantity_{i}"]),
                     "rate": float(request.form[f"item_rate_{i}"]),
-                    "tax": float(request.form[f"item_tax_{i}"]),
                 }
             )
 
@@ -270,4 +280,4 @@ def generate():
 
 
 if __name__ == "__main__":
-    app.run( debug=True)
+    app.run(port=8000, debug=True)
