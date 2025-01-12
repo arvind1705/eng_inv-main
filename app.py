@@ -169,6 +169,11 @@ IFSC Code: CNRB0010651"""
         line_height = 5  # Reduced spacing between rows
         y_start = y + 5  # Initial Y-coordinate
 
+        # Check if there is enough space for tax details and total
+        if y_start + 3 * line_height + 10 > 240:  # Adjusted to leave space for footer
+            self.add_page()
+            y_start = 50
+
         # Display Taxable Amount
         self.set_xy(x_label - 10, y_start)
         self.set_font("Arial", "B", 10)
@@ -198,6 +203,8 @@ IFSC Code: CNRB0010651"""
             .replace("  ", " ")
         )
         total_in_words = total_in_words.title().replace("-", " ")
+        total_in_words = total_in_words.replace("Rupees", "Rupees Only")
+        total_in_words = total_in_words.replace("Thous", "Thousand")
 
         # Calculate the height of the rectangle based on the number of lines in total words
         total_words_lines = self.multi_cell(
