@@ -22,6 +22,7 @@ terms="Net 30"
 eway_bill_no="EBN1234567890"
 your_dc_no="DC987654321"
 tax_rate=18
+tax_invoice_type="Original"
 
 # Start the curl command
 curl_command="curl -X POST http://127.0.0.1:8000/generate \
@@ -31,6 +32,7 @@ curl_command="curl -X POST http://127.0.0.1:8000/generate \
 -d 'bill_to=$bill_to' \
 -d 'terms=$terms' \
 -d 'eway_bill_no=$eway_bill_no' \
+-d 'tax_invoice_type=$tax_invoice_type' \
 -d 'your_dc_no=$your_dc_no' \
 -d 'tax_rate=$tax_rate' \
 -d 'item_count=$item_count'"
