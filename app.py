@@ -267,9 +267,7 @@ IFSC Code: CNRB0010651"""
         # Total in Words (inside the rectangle, on the same line as total amount)
         self.set_xy(15, rect_y + 2)
         self.set_font("Arial", "", 10)
-        self.multi_cell(
-            95, line_height, f"In Words: {total_in_words}", 0, "L"
-        )
+        self.multi_cell(95, line_height, f"In Words: {total_in_words}", 0, "L")
 
         # Add "FOR RAMESH ENGINEERING" below the total
         self.set_xy(10, rect_y + rect_height + 10)
@@ -277,9 +275,9 @@ IFSC Code: CNRB0010651"""
         self.cell(0, 10, "FOR RAMESH ENGINEERING", 0, 1, "R")
         self.cell(0, 10, "", 0, 1, "R")  # Empty line for spacing
 
-        self.set_xy(10, rect_y + rect_height + 25)
+        self.set_xy(142, rect_y + rect_height + 25)
         self.set_font("Arial", "B", 12)
-        self.cell(0, 10, "AUTHORIZED SIGNATORY", 0, 1, "R")
+        self.cell(0, 10, "AUTHORIZED SIGNATORY", 0, 1)
         self.cell(0, 10, "", 0, 1, "R")  # Empty line for spacing
 
 
