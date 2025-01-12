@@ -23,7 +23,7 @@ class InvoicePDF(FPDF):
         self.set_font("Arial", "", 10)
         address_lines = [
             "No.2, Ground Floor, 1st Main Road, 2nd Cross,",
-            "2nd Phase Peenya, Bengaluru (Bangalore) - 560058",
+            "2nd Phase Peenya, Bengaluru - 560058",
             "GSTIN: 29ACXPV3219P1ZD",
             "Phone: +91-9448073832, +91-9449444452",
         ]
