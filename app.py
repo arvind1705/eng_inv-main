@@ -58,13 +58,14 @@ IFSC Code: CNRB0010651"""
         # Invoice info box
         self.set_fill_color(200, 200, 200)
         self.rect(10, 60, 190, 10, "DF")
-        self.set_xy(
-            15, 63
-        )  # Adjusted y-coordinate to place text in the middle vertically
+        self.set_line_width(1.0)  # Set the line width for the border
+        self.line(10.4, 60, 199.6, 60)  # Draw the top border with the new thickness
+        self.set_xy(15, 63)
         self.set_font("Arial", "B", 10)
         self.cell(0, 5, f"Invoice No: {data['invoice_no']}", align="L")
         self.set_xy(105, 63)  # Adjusted x-coordinate to center the text horizontally
         self.cell(0, 5, f"Invoice Date: {data['invoice_date']}", align="L")
+        self.set_line_width(0.4)  # Reset the line width to default
 
         # Your DC No and EWay Bill Box
         self.set_fill_color(200, 200, 200)
@@ -77,7 +78,7 @@ IFSC Code: CNRB0010651"""
         )  # Adjusted x-coordinate to align vertically with the above box
         self.cell(0, 5, f"EWAY Bill No: {data['eway_bill_no']}", align="L")
 
-        # Billing and Shipping info
+        # Billing address
         self.set_xy(10, 90)
         self.set_font("Arial", "B", 10)
         self.cell(95, 10, "Bill To:", ln=True)
