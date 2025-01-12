@@ -258,6 +258,21 @@ IFSC Code: CNRB0010651"""
             95, line_height, f"Total Amount (in words): {total_in_words}", 0, "L"
         )
 
+        # Add "FOR RAMESH ENGINEERING" below the total
+        self.set_xy(10, rect_y + rect_height + 10)
+        self.set_font("Arial", "B", 12)
+        self.cell(0, 10, "FOR RAMESH ENGINEERING", 0, 1, "R")
+        self.cell(0, 10, "", 0, 1, "R")  # Empty line for spacing
+
+
+         # Add "AUTHORIZED SIGNNATURE" below the total
+        self.set_xy(10, rect_y + rect_height +25)
+        self.set_font("Arial", "B", 12)
+        self.cell(0, 10, "AUTHORIZED SIGNNATURE", 0, 1, "R")
+        self.cell(0, 10, "", 0, 1, "R")  # Empty line for spacing
+
+ 
+
 
 @app.route("/")
 def index():
