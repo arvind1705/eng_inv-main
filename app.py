@@ -155,17 +155,7 @@ IFSC Code: CNRB0010651"""
             y += 10
 
         # Round total to nearest integer
-        # Round total to nearest integer
         total = round(total)
-
-        # Display Total in Rectangle
-        total_in_words = (
-            num2words(f"{total}.00", to="currency", lang="en_IN", currency="INR")
-            .replace(", zero paise", "")
-            .replace("and", "")
-            .replace("  ", " ")
-        )
-        total_in_words = total_in_words.title().replace("-", " ")
 
         # Compute tax details
         taxable_amount = total / 1.12  # Assuming 12% GST split into 6% CGST and 6% SGST
@@ -181,23 +171,23 @@ IFSC Code: CNRB0010651"""
         # Display Taxable Amount
         self.set_xy(x_label, y_start)
         self.set_font("Arial", "B", 10)
-        self.cell(40, line_height, "Taxable Amount", 0, 0, "L")
+        self.cell(40, line_height, "Taxable Amount", 1, 0, "L")
         self.set_font("DejaVu", "", 10)
-        self.cell(30, line_height, f"₹ {taxable_amount:.2f}", 0, 0, "R")
+        self.cell(30, line_height, f"₹ {taxable_amount:.2f}", 1, 0, "R")
 
         # Display CGST
         self.set_xy(x_label, y_start + line_height)
         self.set_font("Arial", "B", 10)
-        self.cell(40, line_height, "CGST @6%", 0, 0, "L")
+        self.cell(40, line_height, "CGST @6%", 1, 0, "L")
         self.set_font("DejaVu", "", 10)
-        self.cell(30, line_height, f"₹ {cgst:.2f}", 0, 0, "R")
+        self.cell(30, line_height, f"₹ {cgst:.2f}", 1, 0, "R")
 
         # Display SGST
         self.set_xy(x_label, y_start + 2 * line_height)
         self.set_font("Arial", "B", 10)
-        self.cell(40, line_height, "SGST @6%", 0, 0, "L")
+        self.cell(40, line_height, "SGST @6%", 1, 0, "L")
         self.set_font("DejaVu", "", 10)
-        self.cell(30, line_height, f"₹ {sgst:.2f}", 0, 0, "R")
+        self.cell(30, line_height, f"₹ {sgst:.2f}", 1, 0, "R")
 
         # Display Total in Rectangle
         total_in_words = (
@@ -210,20 +200,22 @@ IFSC Code: CNRB0010651"""
 
         # Rectangle for Total Amount and Words
         rect_y = y_start + 3 * line_height + 5
-        rect_height = 20
-        self.set_xy(x_label - 10, rect_y)
+        rect_height = 12
+        self.set_xy(10, rect_y)
         self.set_font("Arial", "B", 10)
-        self.cell(90, rect_height, "", border=1)  # Draw rectangle
+        self.cell(
+            190, rect_height, "", border=1
+        )  # Draw rectangle with all borders
 
         # Total Label and Value (inside the rectangle)
-        self.set_xy(x_label, rect_y + 5)
+        self.set_xy(120, rect_y + 5)
         self.set_font("Arial", "B", 12)
         self.cell(40, line_height, "TOTAL:", 0, 0, "L")  # Bold label "TOTAL:"
         self.set_font("DejaVu", "", 12)
         self.cell(30, line_height, f"₹ {total:.2f}", 0, 0, "R")
 
-        # Total in Words (inside the rectangle)
-        self.set_xy(x_label, rect_y + 12)
+        # Total in Words (inside the rectangle, on the same line as total amount)
+        self.set_xy(15, rect_y + 5)
         self.set_font("Arial", "", 10)
         self.cell(
             0, line_height, f"Total Amount (in words): {total_in_words}", 0, 0, "L"
@@ -278,4 +270,4 @@ def generate():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run( debug=True)
