@@ -16,17 +16,22 @@ class InvoicePDF(FPDF):
     """This class generates a PDF invoice using the FPDF library."""
 
     def header(self):
-        self.image("logo.jpeg", 10, -1, 50)
+        self.image("logo.jpeg", 10, 2, 50)
         self.set_xy(70, 15)
         self.set_font("Arial", "B", 12)
         self.cell(0, 5, "RAMESH ENGINEERING", ln=True)
-        self.set_xy(70, 20)
         self.set_font("Arial", "", 10)
-        self.cell(0, 5, "NO.2, GROUND FLOOR, 1ST MAIN ROAD, 2ND CROSS,", ln=True)
-        self.set_xy(70, 25)
-        self.cell(0, 5, "2ND PHASE PEENYA, Bengaluru (Bangalore)", ln=True)
-        self.set_xy(70, 30)
-        self.cell(0, 5, "GSTIN: 29ACXPV3219P1ZD", ln=True)
+        address_lines = [
+            "NO.2, GROUND FLOOR, 1ST MAIN ROAD, 2ND CROSS,",
+            "2ND PHASE PEENYA, Bengaluru (Bangalore)",
+            "GSTIN: 29ACXPV3219P1ZD",
+            "Phone: +91-9448073832",
+        ]
+        y = 20
+        for line in address_lines:
+            self.set_xy(70, y)
+            self.cell(0, 5, line, ln=True)
+            y += 5
         self.ln(20)
 
     def footer(self):
