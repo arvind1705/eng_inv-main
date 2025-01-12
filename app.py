@@ -151,8 +151,7 @@ IFSC Code: CNRB0010651"""
         for idx, item in enumerate(data["items"], start=1):
             x = 10
             amount = item["quantity"] * item["rate"]
-            tax_amount = amount * (int(data["tax_rate"]) / 100)
-            total_amount = amount + tax_amount
+            total_amount = amount
             total += total_amount
 
             if y > 250:  # Adjusted to leave space for footer. Changed from 250 to 260
@@ -188,13 +187,11 @@ IFSC Code: CNRB0010651"""
             self.cell(widths[5], 10, f"{RS}{total_amount:.2f}", 1, 0, "R")
             y += 10
 
-        # Round total to nearest integer
-        total = round(total)
-
         # Compute tax details
-        taxable_amount = total / (1 + gst_tax_rate / 100)
-        cgst = taxable_amount * (gst_tax_rate / 2)
-        sgst = taxable_amount * (gst_tax_rate / 2)
+        taxable_amount = round(total)
+        cgst = sgst = round(taxable_amount * (gst_tax_rate / 100))
+
+        total = taxable_amount + cgst + sgst
 
         # Horizontal positions for labels and values
         x_label = 120  # X-coordinate for labels
