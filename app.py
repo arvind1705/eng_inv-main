@@ -1,15 +1,19 @@
+""" Description: This script generates a PDF invoice using the FPDF library."""
+
+import os
+
 from flask import Flask, render_template, request, send_file
 from fpdf import FPDF
-import os
 from werkzeug.utils import secure_filename
 from num2words import num2words
 
 app = Flask(__name__)
 
-rs = "\u20B9"
+RS = "\u20B9"
 
 
 class InvoicePDF(FPDF):
+    """This class generates a PDF invoice using the FPDF library."""
 
     def header(self):
         self.image("logo.jpeg", 10, -1, 50)
@@ -52,6 +56,7 @@ IFSC Code: CNRB0010651"""
         self.multi_cell(0, 5, bank)
 
     def create_invoice(self, data):
+        """This method generates the invoice using the provided data."""
         self.add_font("DejaVu", "", "DejaVuSansCondensed.ttf", uni=True)
         self.add_page()
         gst_tax_rate = int(data["tax_rate"]) / 2
@@ -145,14 +150,14 @@ IFSC Code: CNRB0010651"""
             x += widths[2]
             self.set_xy(x, y)
             self.set_font("DejaVu", "", 10)
-            self.cell(widths[3], 10, f"{rs}{item['rate']:.2f}", 1, 0, "C")
+            self.cell(widths[3], 10, f"{RS}{item['rate']:.2f}", 1, 0, "C")
             x += widths[3]
             self.set_xy(x, y)
             self.cell(widths[4], 10, f"{data['tax_rate']}%", 1, 0, "C")
             x += widths[4]
             self.set_xy(x, y)
             self.set_font("DejaVu", "", 10)
-            self.cell(widths[5], 10, f"{rs}{total_amount:.2f}", 1, 0, "R")
+            self.cell(widths[5], 10, f"{RS}{total_amount:.2f}", 1, 0, "R")
             y += 10
 
         # Round total to nearest integer
@@ -165,7 +170,7 @@ IFSC Code: CNRB0010651"""
 
         # Horizontal positions for labels and values
         x_label = 120  # X-coordinate for labels
-        x_value = 170  # X-coordinate for values (aligned closer to labels)
+        _ = 170  # X-coordinate for values (aligned closer to labels)
         line_height = 5  # Reduced spacing between rows
         y_start = y + 5  # Initial Y-coordinate
 
@@ -241,11 +246,13 @@ IFSC Code: CNRB0010651"""
 
 @app.route("/")
 def index():
+    """This function renders the form template."""
     return render_template("form.html")
 
 
 @app.route("/generate", methods=["POST"])
 def generate():
+    """This function generates the PDF invoice using the provided data."""
     # pdf_path = 'invoice.pdf'
     try:
         data = {
