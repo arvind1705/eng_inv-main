@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -110,6 +111,7 @@
         }
     </style>
 </head>
+
 <body>
     <h1 class="main-title">Ramesh Engineering</h1>
     <h2 class="subtitle">Invoice Form</h2>
@@ -141,16 +143,17 @@
                 <option value="18">18%</option>
             </select>
         </div>
-        
+
         <h3>Items</h3>
         <div id="items">
-            <div class="item">
+            <div class="item" id="item_0">
                 <label>Description:</label>
                 <input type="text" name="item_description_0" required>
                 <label>Quantity:</label>
                 <input type="number" name="item_quantity_0" required>
                 <label>Rate:</label>
                 <input type="number" name="item_rate_0" required>
+                <button type="button" onclick="deleteItem(0)">Delete</button>
             </div>
         </div>
         <input type="hidden" name="item_count" value="1" id="item_count">
@@ -179,10 +182,13 @@
 
     <script>
         let itemCount = 1;
+        
         function addItem() {
             const itemsDiv = document.getElementById('items');
             const newItem = document.createElement('div');
             newItem.className = 'item';
+            newItem.setAttribute('id', `item_${itemCount}`);
+        
             newItem.innerHTML = `
                 <label>Description:</label>
                 <input type="text" name="item_description_${itemCount}" required>
@@ -190,10 +196,45 @@
                 <input type="number" name="item_quantity_${itemCount}" required>
                 <label>Rate:</label>
                 <input type="number" name="item_rate_${itemCount}" required>
+                <button type="button" onclick="deleteItem(${itemCount})">Delete</button>
             `;
+        
             itemsDiv.appendChild(newItem);
             document.getElementById('item_count').value = ++itemCount;
         }
+        
+        function deleteItem(index) {
+            const itemToDelete = document.getElementById(`item_${index}`);
+            if (itemToDelete) {
+                itemToDelete.remove();
+                updateItemSequence();
+            }
+        }
+        
+        function updateItemSequence() {
+            const items = document.querySelectorAll('#items .item');
+            itemCount = items.length; // Update the item count after deletion
+        
+            // Update the item count value for the form
+            document.getElementById('item_count').value = itemCount;
+        
+            // Renumber items and update their names and IDs
+            items.forEach((item, index) => {
+                const itemId = `item_${index}`;
+                item.setAttribute('id', itemId);
+        
+                const description = item.querySelector(`input[name^="item_description"]`);
+                const quantity = item.querySelector(`input[name^="item_quantity"]`);
+                const rate = item.querySelector(`input[name^="item_rate"]`);
+                const deleteButton = item.querySelector('button');
+        
+                if (description) description.name = `item_description_${index}`;
+                if (quantity) quantity.name = `item_quantity_${index}`;
+                if (rate) rate.name = `item_rate_${index}`;
+                if (deleteButton) deleteButton.setAttribute('onclick', `deleteItem(${index})`);
+            });
+        }
     </script>
 </body>
+
 </html>
