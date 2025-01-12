@@ -27,12 +27,11 @@ class InvoicePDF(FPDF):
 
     def footer(self):
         terms = """
-1. Goods once sold cannot be returned or exchanged.
+1. No returns or exchanges on sold goods.
 2. All disputes are subject to local jurisdiction only.
-3. Payment within 30 days of delivery.
-4. Guarantee doesn't cover mishandling of components after delivery
+3. Payment is due within 30 days of delivery.
+4. Guarantee excludes mishandling after delivery.
 """
-
         bank = """
 Bank Name: CANARA BANK
 A/C NAME: RAMESH ENGINEERING
@@ -124,15 +123,15 @@ IFSC Code: CNRB0010651"""
 
             if y > 240:  # Adjusted to leave space for footer
                 self.add_page()
-            y = 50
-            x = 10
-            self.set_fill_color(200, 200, 200)
-            for i, header in enumerate(headers):
-                self.set_xy(x, y)
-                self.cell(widths[i], 10, header, 1, 0, "C", True)
-                x += widths[i]
-            y += 10
-            x = 10
+                y = 50
+                x = 10
+                self.set_fill_color(200, 200, 200)
+                for i, header in enumerate(headers):
+                    self.set_xy(x, y)
+                    self.cell(widths[i], 10, header, 1, 0, "C", True)
+                    x += widths[i]
+                y += 10
+                x = 10
 
             self.set_xy(x, y)
             self.cell(widths[0], 10, str(idx), 1, 0, "C")
