@@ -18,7 +18,7 @@ class InvoicePDF(FPDF):
     def header(self):
         self.image("logo.jpeg", 10, 2, 50)
         self.set_xy(70, 15)
-        self.set_font("Arial", "B", 12)
+        self.set_font("Arial", "B", 20)
         self.cell(0, 5, "RAMESH ENGINEERING", ln=True)
         self.set_font("Arial", "", 10)
         address_lines = [
@@ -27,12 +27,18 @@ class InvoicePDF(FPDF):
             "GSTIN: 29ACXPV3219P1ZD",
             "Mobile: +91-9448073832, +91-9449444452",
         ]
+        self.set_font("Arial", "B", 10)
         y = 20
         for line in address_lines:
             self.set_xy(70, y)
             self.cell(0, 5, line, ln=True)
             y += 5
         self.ln(20)
+        
+        # Add "TAX INVOICE - ORIGINAL" to the top left of the page
+        self.set_xy(5, 5)
+        self.set_font("Arial", "", 10)
+        self.cell(0, 5, "TAX INVOICE - ORIGINAL", ln=True)
 
     def footer(self):
         terms = """
