@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, send_file
 from fpdf import FPDF
 import os
 from werkzeug.utils import secure_filename
+from num2words import num2words
 
 app = Flask(__name__)
 
@@ -27,7 +28,11 @@ class InvoicePDF(FPDF):
     def footer(self):
         terms = """
 1. Goods once sold cannot be returned or exchanged.
-2. All disputes are subject to local jurisdiction only."""
+2. All disputes are subject to local jurisdiction only.
+3. Payment within 30 days of delivery.
+4. Guarantee doesn't cover mishandling of components after delivery
+"""
+
         bank = """
 Bank Name: CANARA BANK
 A/C NAME: RAMESH ENGINEERING
@@ -119,15 +124,15 @@ IFSC Code: CNRB0010651"""
 
             if y > 240:  # Adjusted to leave space for footer
                 self.add_page()
-                y = 50
-                x = 10
-                self.set_fill_color(200, 200, 200)
-                for i, header in enumerate(headers):
-                    self.set_xy(x, y)
-                    self.cell(widths[i], 10, header, 1, 0, "C", True)
-                    x += widths[i]
-                y += 10
-                x = 10
+            y = 50
+            x = 10
+            self.set_fill_color(200, 200, 200)
+            for i, header in enumerate(headers):
+                self.set_xy(x, y)
+                self.cell(widths[i], 10, header, 1, 0, "C", True)
+                x += widths[i]
+            y += 10
+            x = 10
 
             self.set_xy(x, y)
             self.cell(widths[0], 10, str(idx), 1, 0, "C")
@@ -150,12 +155,28 @@ IFSC Code: CNRB0010651"""
             self.cell(widths[5], 10, f"{rs}{total_amount:.2f}", 1, 0, "R")
             y += 10
 
+        # Round total to nearest integer
+        total = round(total)
+
         # Total
         self.set_xy(140, y + 5)
         self.set_font("Arial", "B", 10)
         self.cell(30, 10, "Total:", 0, 0, "R")
         self.set_font("DejaVu", "", 10)
-        self.cell(30, 10, f"{rs}{total:.2f}", 0, 0, "R")
+        self.cell(30, 10, f"{rs}{round(total)}", 0, 0, "R")
+
+        # Total in words
+        total_in_words = (
+            num2words(f"{total}.00", to="currency", lang="en_IN", currency="INR")
+            .replace(", zero paise", "")
+            .replace("and", "")
+            .replace("  ", " ")
+        )
+        total_in_words = total_in_words.title().replace("-", " ")
+
+        self.set_xy(10, y + 5)
+        self.set_font("Arial", "", 10)
+        self.cell(0, 10, f"Total Amount (in words): {total_in_words}", 0, 0, "L")
 
         # Draw full horizontal borders
         self.line(10, y + 5, 200, y + 5)
@@ -202,9 +223,11 @@ def generate():
         return_data = send_file(pdf_path, as_attachment=True, download_name=filename)
         return return_data
     finally:
-        pass
-    # if os.path.exists(pdf_path):
-    # os.remove(pdf_path)
+        if os.name == "nt":
+            pass
+        else:
+            if os.path.exists(pdf_path):
+                os.remove(pdf_path)
 
 
 if __name__ == "__main__":
