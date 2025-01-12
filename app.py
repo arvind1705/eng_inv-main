@@ -80,7 +80,7 @@ IFSC Code: CNRB0010651"""
 
         # Add statement below the dark line
         self.set_y(-7)
-        self.set_font("Arial", "I", 9)
+        self.set_font("Arial", "", 9)
         self.cell(0, 10, "This is a computer generated invoice.", 0, 0, "C")
 
     def create_invoice(self, data):
@@ -133,8 +133,8 @@ IFSC Code: CNRB0010651"""
 
         # Table headers
         self.set_fill_color(200, 200, 200)
-        headers = ["S.No", "Description", "Qty", "Rate", "Tax (%)", "Amount"]
-        widths = [10, 70, 20, 30, 20, 40]
+        headers = ["S.No", "Description", "Qty", "Rate", "Amount"]
+        widths = [10, 80, 20, 30, 50]
 
         self.set_font("Arial", "B", 10)
         x = 10
@@ -180,11 +180,8 @@ IFSC Code: CNRB0010651"""
             self.cell(widths[3], 10, f"{RS}{item['rate']:.2f}", 1, 0, "C")
             x += widths[3]
             self.set_xy(x, y)
-            self.cell(widths[4], 10, f"{data['tax_rate']}%", 1, 0, "C")
-            x += widths[4]
-            self.set_xy(x, y)
             self.set_font("DejaVu", "", 10)
-            self.cell(widths[5], 10, f"{RS}{total_amount:.2f}", 1, 0, "R")
+            self.cell(widths[4], 10, f"{RS}{total_amount:.2f}", 1, 0, "R")
             y += 10
 
         # Compute tax details
@@ -192,7 +189,6 @@ IFSC Code: CNRB0010651"""
         cgst = sgst = round(taxable_amount * (gst_tax_rate / 100))
 
         total = taxable_amount + cgst + sgst
-
         # Horizontal positions for labels and values
         x_label = 120  # X-coordinate for labels
         _ = 170  # X-coordinate for values (aligned closer to labels)
@@ -244,6 +240,13 @@ IFSC Code: CNRB0010651"""
             split_only=True,
         )
         rect_height = max(10, len(total_words_lines) * line_height + 4)
+
+        # Check if there is enough space for the rectangle
+        if (
+            y_start + 3 * line_height + rect_height + 10 > 240
+        ):  # Adjusted to leave space for footer
+            self.add_page()
+            y_start = 50
 
         # Rectangle for Total Amount and Words
         rect_y = y_start + 3 * line_height + 4

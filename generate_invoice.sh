@@ -21,7 +21,7 @@ USA"
 terms="Net 30"
 eway_bill_no="EBN1234567890"
 your_dc_no="DC987654321"
-tax_rate=18
+tax_rate=12
 tax_invoice_type="Original"
 
 # Start the curl command
