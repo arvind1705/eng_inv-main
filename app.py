@@ -67,28 +67,26 @@ IFSC Code: CNRB0010651"""
         self.cell(0, 5, f"Invoice Date: {data['invoice_date']}", align="L")
         self.set_line_width(0.4)  # Reset the line width to default
 
-        # Your DC No and EWay Bill Box
-        self.set_fill_color(200, 200, 200)
-        self.rect(10, 75, 190, 10, "DF")
+        # Billing address box
+        self.set_fill_color(255, 255, 255)
+        self.rect(10, 75, 95, 30, "DF")
         self.set_xy(15, 77)
         self.set_font("Arial", "B", 10)
+        self.cell(0, 5, "Bill To:", ln=True)
+        self.set_font("Arial", "", 10)
+        self.set_xy(15, 82)
+        self.multi_cell(85, 5, data["bill_to"])
+
+        # Your DC No and EWay Bill Box
+        self.rect(105, 75, 95, 30, "DF")
+        self.set_xy(110, 77)
+        self.set_font("Arial", "B", 10)
         self.cell(0, 5, f"Your DC No: {data['your_dc_no']}", align="L")
-        self.set_xy(
-            105, 77
-        )  # Adjusted x-coordinate to align vertically with the above box
+        self.set_xy(110, 82)  # Reduced the vertical distance
         self.cell(0, 5, f"EWAY Bill No: {data['eway_bill_no']}", align="L")
 
-        # Billing address
-        self.set_xy(10, 90)
-        self.set_font("Arial", "B", 10)
-        self.cell(95, 10, "Bill To:", ln=True)
-
-        self.set_font("Arial", "", 10)
-        self.set_xy(10, 100)
-        self.multi_cell(95, 5, data["bill_to"])
-
         # Items table
-        self.ln(10)
+        self.ln(5)
         self.set_xy(10, 130)
 
         # Table headers
