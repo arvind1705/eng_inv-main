@@ -15,6 +15,10 @@ RS = "\u20B9"
 class InvoicePDF(FPDF):
     """This class generates a PDF invoice using the FPDF library."""
 
+    def __init__(self, data):
+        super().__init__()
+        self.data = data
+
     def header(self):
         self.image("logo.jpeg", 10, 2, 50)
         self.set_xy(70, 15)
@@ -27,18 +31,21 @@ class InvoicePDF(FPDF):
             "GSTIN: 29ACXPV3219P1ZD",
             "Mobile: +91-9448073832, +91-9449444452",
         ]
-        self.set_font("Arial", "B", 10)
         y = 20
         for line in address_lines:
             self.set_xy(70, y)
+            if "GSTIN" in line:
+                self.set_font("Arial", "B", 10)
+            else:
+                self.set_font("Arial", "", 10)
             self.cell(0, 5, line, ln=True)
             y += 5
         self.ln(20)
-        
+
         # Add "TAX INVOICE - ORIGINAL" to the top left of the page
         self.set_xy(5, 5)
         self.set_font("Arial", "", 10)
-        self.cell(0, 5, "TAX INVOICE - ORIGINAL", ln=True)
+        self.cell(0, 5, f"TAX INVOICE - {self.data['tax_invoice_type']}", ln=True)
 
     def footer(self):
         terms = """
@@ -295,6 +302,7 @@ def generate():
             "eway_bill_no": request.form["eway_bill_no"],
             "your_dc_no": request.form["your_dc_no"],
             "tax_rate": request.form["tax_rate"],
+            "tax_invoice_type": request.form["tax_invoice_type"],
             "items": [],
         }
         invoice_no = request.form["invoice_no"]
@@ -311,9 +319,9 @@ def generate():
                 }
             )
 
-        pdf = InvoicePDF()
-        pdf.create_invoice(data)
-        pdf.output(pdf_path)
+            pdf = InvoicePDF(data=data)
+            pdf.create_invoice(data)
+            pdf.output(pdf_path)
 
         return_data = send_file(pdf_path, as_attachment=True, download_name=filename)
         return return_data
