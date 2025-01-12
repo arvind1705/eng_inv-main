@@ -306,7 +306,8 @@ def generate():
             "items": [],
         }
         invoice_no = request.form["invoice_no"]
-        filename = secure_filename(f"{invoice_no}.pdf")
+        tax_invoice_type = request.form["tax_invoice_type"]
+        filename = secure_filename(f"{invoice_no}_{tax_invoice_type}.pdf")
         pdf_path = filename
 
         item_count = int(request.form["item_count"])
