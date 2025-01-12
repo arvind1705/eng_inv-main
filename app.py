@@ -155,16 +155,10 @@ IFSC Code: CNRB0010651"""
             y += 10
 
         # Round total to nearest integer
+        # Round total to nearest integer
         total = round(total)
 
-        # Total
-        self.set_xy(140, y + 5)
-        self.set_font("Arial", "B", 10)
-        self.cell(30, 10, "Total:", 0, 0, "R")
-        self.set_font("DejaVu", "", 10)
-        self.cell(30, 10, f"{rs}{round(total)}", 0, 0, "R")
-
-        # Total in words
+        # Display Total in Rectangle
         total_in_words = (
             num2words(f"{total}.00", to="currency", lang="en_IN", currency="INR")
             .replace(", zero paise", "")
@@ -173,13 +167,67 @@ IFSC Code: CNRB0010651"""
         )
         total_in_words = total_in_words.title().replace("-", " ")
 
-        self.set_xy(10, y + 5)
-        self.set_font("Arial", "", 10)
-        self.cell(0, 10, f"Total Amount (in words): {total_in_words}", 0, 0, "L")
+        # Compute tax details
+        taxable_amount = total / 1.12  # Assuming 12% GST split into 6% CGST and 6% SGST
+        cgst = taxable_amount * 0.06
+        sgst = taxable_amount * 0.06
 
-        # Draw full horizontal borders
-        self.line(10, y + 5, 200, y + 5)
-        self.line(10, y + 15, 200, y + 15)
+        # Horizontal positions for labels and values
+        x_label = 120  # X-coordinate for labels
+        x_value = 170  # X-coordinate for values (aligned closer to labels)
+        line_height = 5  # Reduced spacing between rows
+        y_start = y + 5  # Initial Y-coordinate
+
+        # Display Taxable Amount
+        self.set_xy(x_label, y_start)
+        self.set_font("Arial", "B", 10)
+        self.cell(40, line_height, "Taxable Amount", 0, 0, "L")
+        self.set_font("DejaVu", "", 10)
+        self.cell(30, line_height, f"₹ {taxable_amount:.2f}", 0, 0, "R")
+
+        # Display CGST
+        self.set_xy(x_label, y_start + line_height)
+        self.set_font("Arial", "B", 10)
+        self.cell(40, line_height, "CGST @6%", 0, 0, "L")
+        self.set_font("DejaVu", "", 10)
+        self.cell(30, line_height, f"₹ {cgst:.2f}", 0, 0, "R")
+
+        # Display SGST
+        self.set_xy(x_label, y_start + 2 * line_height)
+        self.set_font("Arial", "B", 10)
+        self.cell(40, line_height, "SGST @6%", 0, 0, "L")
+        self.set_font("DejaVu", "", 10)
+        self.cell(30, line_height, f"₹ {sgst:.2f}", 0, 0, "R")
+
+        # Display Total in Rectangle
+        total_in_words = (
+            num2words(f"{total}.00", to="currency", lang="en_IN", currency="INR")
+            .replace(", zero paise", "")
+            .replace("and", "")
+            .replace("  ", " ")
+        )
+        total_in_words = total_in_words.title().replace("-", " ")
+
+        # Rectangle for Total Amount and Words
+        rect_y = y_start + 3 * line_height + 5
+        rect_height = 20
+        self.set_xy(x_label - 10, rect_y)
+        self.set_font("Arial", "B", 10)
+        self.cell(90, rect_height, "", border=1)  # Draw rectangle
+
+        # Total Label and Value (inside the rectangle)
+        self.set_xy(x_label, rect_y + 5)
+        self.set_font("Arial", "B", 12)
+        self.cell(40, line_height, "TOTAL:", 0, 0, "L")  # Bold label "TOTAL:"
+        self.set_font("DejaVu", "", 12)
+        self.cell(30, line_height, f"₹ {total:.2f}", 0, 0, "R")
+
+        # Total in Words (inside the rectangle)
+        self.set_xy(x_label, rect_y + 12)
+        self.set_font("Arial", "", 10)
+        self.cell(
+            0, line_height, f"Total Amount (in words): {total_in_words}", 0, 0, "L"
+        )
 
 
 @app.route("/")
@@ -189,7 +237,7 @@ def index():
 
 @app.route("/generate", methods=["POST"])
 def generate():
-    # pdf_path = "invoice.pdf"
+    # pdf_path = 'invoice.pdf'
     try:
         data = {
             "invoice_no": request.form["invoice_no"],
