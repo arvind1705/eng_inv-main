@@ -46,19 +46,29 @@ Bank Name: CANARA BANK
 A/C NAME: RAMESH ENGINEERING
 Account No: 04081010002140
 IFSC Code: CNRB0010651"""
-        self.set_y(-33)  # Moved down by 2 units
+        self.set_y(-36)  # Moved down by 2 units
         self.set_font("Arial", "B", 10)
         self.cell(0, 10, "Terms and Conditions:", ln=0)
         self.set_font("Arial", "", 10)
-        self.set_y(-28)  # Moved down by 2 units
+        self.set_y(-30)  # Moved down by 2 units
         self.multi_cell(90, 5, terms)
 
-        self.set_xy(120, -33)  # Moved down by 2 units
+        self.set_xy(120, -36)  # Moved down by 2 units
         self.set_font("Arial", "B", 10)
         self.cell(0, 10, "Bank Details:", ln=0)
         self.set_font("Arial", "", 10)
-        self.set_xy(120, -28)  # Moved down by 2 units
+        self.set_xy(120, -30)  # Moved down by 2 units
         self.multi_cell(0, 5, bank)
+
+        # Draw a dark line below the footer
+        self.set_line_width(0.6)
+        self.set_draw_color(0, 0, 0)
+        self.line(10, 292, 200, 292)
+
+        # Add statement below the dark line
+        self.set_y(-7)
+        self.set_font("Arial", "I", 9)
+        self.cell(0, 10, "This is a computer generated invoice.", 0, 0, "C")
 
     def create_invoice(self, data):
         """This method generates the invoice using the provided data."""
