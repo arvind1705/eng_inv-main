@@ -25,7 +25,7 @@ class InvoicePDF(FPDF):
             "No.2, Ground Floor, 1st Main Road, 2nd Cross,",
             "2nd Phase Peenya, Bengaluru - 560058",
             "GSTIN: 29ACXPV3219P1ZD",
-            "Phone: +91-9448073832, +91-9449444452",
+            "Mobile: +91-9448073832, +91-9449444452",
         ]
         y = 20
         for line in address_lines:
