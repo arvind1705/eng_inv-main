@@ -5,6 +5,8 @@ from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 
+rs = "\u20B9"
+
 
 class InvoicePDF(FPDF):
 
@@ -46,6 +48,7 @@ IFSC Code: CNRB0010651"""
         self.multi_cell(0, 5, bank)
 
     def create_invoice(self, data):
+        self.add_font("DejaVu", "", "DejaVuSansCondensed.ttf", uni=True)
         self.add_page()
 
         # Invoice details box
@@ -136,20 +139,23 @@ IFSC Code: CNRB0010651"""
             self.cell(widths[2], 10, str(item["quantity"]), 1, 0, "C")
             x += widths[2]
             self.set_xy(x, y)
-            self.cell(widths[3], 10, f"Rs. {item['rate']:.2f}", 1, 0, "C")
+            self.set_font("DejaVu", "", 10)
+            self.cell(widths[3], 10, f"{rs}{item['rate']:.2f}", 1, 0, "C")
             x += widths[3]
             self.set_xy(x, y)
             self.cell(widths[4], 10, f"{item['tax']}%", 1, 0, "C")
             x += widths[4]
             self.set_xy(x, y)
-            self.cell(widths[5], 10, f"Rs. {total_amount:.2f}", 1, 0, "R")
+            self.set_font("DejaVu", "", 10)
+            self.cell(widths[5], 10, f"{rs}{total_amount:.2f}", 1, 0, "R")
             y += 10
 
         # Total
         self.set_xy(140, y + 5)
         self.set_font("Arial", "B", 10)
         self.cell(30, 10, "Total:", 0, 0, "R")
-        self.cell(30, 10, f"Rs. {total:.2f}", 0, 0, "R")
+        self.set_font("DejaVu", "", 10)
+        self.cell(30, 10, f"{rs}{total:.2f}", 0, 0, "R")
 
         # Draw full horizontal borders
         self.line(10, y + 5, 200, y + 5)
