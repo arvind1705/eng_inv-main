@@ -33,8 +33,8 @@ descriptions=("Widget A" "Widget B" "Widget C" "Widget D" "Widget E")
 # Loop over the item entries
 for ((i=0; i<item_count; i++)); do
     description=${descriptions[$RANDOM % ${#descriptions[@]}]}
-    quantity=$((i + 1))
-    rate=$((10 + i * 5))
+    quantity=$((RANDOM % 50 + 1))  # Random quantity between 1 and 10
+    rate=$((RANDOM % 1000 + 1))     # Random rate between 1 and 100
     
     curl_command+=" -d 'item_description_$i=$description' \
 -d 'item_quantity_$i=$quantity' \
