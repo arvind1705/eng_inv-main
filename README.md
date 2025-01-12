@@ -30,51 +30,40 @@ Required packages:
 
 1. Clone the repository
 2. Install dependencies: `pip install -r requirements.txt`
-3. Add your company logo as 
-
-logo.jpeg
-
- in the root directory
-4. Ensure 
-
-DejaVuSansCondensed.ttf
-
- font file is present
+3. Add your company logo as `logo.jpeg` in the root directory
+4. Ensure `DejaVuSansCondensed.ttf` font file is present
 
 ## Usage
 
 1. Start the server:
-```sh
-python app.py
-```
-
+    ```sh
+    python app.py
+    ```
 2. Access the web interface at `http://localhost:8000`
-
 3. Fill in the invoice details:
-   - Invoice number
-   - E-way bill number
-   - DC number
-   - Invoice date
-   - Billing address
-   - Tax rate (12% or 18%)
-   - Add items with description, quantity and rate
-
+    - Invoice number
+    - E-way bill number
+    - DC number
+    - Invoice date
+    - Billing address
+    - Tax rate (12% or 18%)
+    - Add items with description, quantity and rate
 4. Click "Generate Invoice" to download the PDF
 
 ## API Endpoint
 
 - `POST /generate`: Generates and returns a PDF invoice
-  - Form data parameters:
-    - invoice_no (required)
-    - invoice_date (required)
-    - bill_to (required)
-    - eway_bill_no (required)
-    - your_dc_no (required)
-    - tax_rate (required)
-    - item_count
-    - item_description_[n]
-    - item_quantity_[n]
-    - item_rate_[n]
+    - Form data parameters:
+        - `invoice_no` (required)
+        - `invoice_date` (required)
+        - `bill_to` (required)
+        - `eway_bill_no` (required)
+        - `your_dc_no` (required)
+        - `tax_rate` (required)
+        - `item_count`
+        - `item_description_[n]`
+        - `item_quantity_[n]`
+        - `item_rate_[n]`
 
 ## Deployment
 
