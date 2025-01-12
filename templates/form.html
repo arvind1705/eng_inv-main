@@ -154,13 +154,13 @@
         <h3>Items</h3>
         <div id="items">
             <div class="item" id="item_0">
-                <label>Description:</label>
-                <input type="text" name="item_description_0" required>
-                <label>Quantity:</label>
-                <input type="number" name="item_quantity_0" required>
-                <label>Rate:</label>
-                <input type="number" name="item_rate_0" required>
-                <button type="button" onclick="deleteItem(0)">Delete</button>
+            <label>Description:</label>
+            <textarea name="item_description_0" required></textarea>
+            <label>Quantity:</label>
+            <input type="number" name="item_quantity_0" required>
+            <label>Rate:</label>
+            <input type="number" name="item_rate_0" required>
+            <button type="button" onclick="deleteItem(0)">Delete</button>
             </div>
         </div>
         <input type="hidden" name="item_count" value="1" id="item_count">
@@ -198,7 +198,7 @@
         
             newItem.innerHTML = `
                 <label>Description:</label>
-                <input type="text" name="item_description_${itemCount}" required>
+                <textarea name="item_description_${itemCount}" required></textarea>
                 <label>Quantity:</label>
                 <input type="number" name="item_quantity_${itemCount}" required>
                 <label>Rate:</label>
