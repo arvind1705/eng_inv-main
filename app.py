@@ -52,25 +52,25 @@ class InvoicePDF(FPDF):
 1. No returns or exchanges on sold goods.
 2. All disputes are subject to local jurisdiction only.
 3. Payment is due within 30 days of delivery.
-4. Guarantee excludes mishandling after delivery.
+4. Guarantee excludes mishandling of components after delivery.
 """
         bank = """
 Bank Name: CANARA BANK
 A/C NAME: RAMESH ENGINEERING
 Account No: 04081010002140
 IFSC Code: CNRB0010651"""
-        self.set_y(-36)  # Moved down by 2 units
+        self.set_y(-36)
         self.set_font("Arial", "B", 10)
         self.cell(0, 10, "Terms and Conditions:", ln=0)
         self.set_font("Arial", "", 10)
-        self.set_y(-30)  # Moved down by 2 units
-        self.multi_cell(90, 5, terms)
+        self.set_y(-30)
+        self.multi_cell(105, 5, terms)
 
-        self.set_xy(120, -36)  # Moved down by 2 units
+        self.set_xy(130, -36)
         self.set_font("Arial", "B", 10)
         self.cell(0, 10, "Bank Details:", ln=0)
         self.set_font("Arial", "", 10)
-        self.set_xy(120, -30)  # Moved down by 2 units
+        self.set_xy(130, -30)
         self.multi_cell(0, 5, bank)
 
         # Draw a dark line below the footer
@@ -90,20 +90,20 @@ IFSC Code: CNRB0010651"""
         gst_tax_rate = int(data["tax_rate"]) / 2
 
         # Invoice details box
-        self.set_xy(10, 40)  # Moved up by 5 units
+        self.set_xy(10, 40)
         self.set_font("Arial", "B", 12)
         self.cell(0, 10, "TAX INVOICE", align="C", ln=True)
         self.set_font("Arial", "", 10)
 
         # Invoice info box
         self.set_fill_color(200, 200, 200)
-        self.rect(10, 55, 190, 10, "DF")  # Moved up by 5 units
+        self.rect(10, 55, 190, 10, "DF")
         self.set_line_width(1.0)
-        self.line(10.4, 55, 199.6, 55)  # Moved up by 5 units
-        self.set_xy(15, 58)  # Moved up by 5 units
+        self.line(10.4, 55, 199.6, 55)
+        self.set_xy(15, 58)
         self.set_font("Arial", "B", 10)
         self.cell(0, 5, f"Invoice No: {data['invoice_no']}", align="L")
-        self.set_xy(105, 58)  # Moved up by 5 units
+        self.set_xy(105, 58)
         self.cell(0, 5, f"Invoice Date: {data['invoice_date']}", align="L")
         self.set_line_width(0.4)
 
@@ -111,26 +111,25 @@ IFSC Code: CNRB0010651"""
         bill_to_lines = self.multi_cell(85, 5, data["bill_to"], split_only=True)
         bill_to_height = len(bill_to_lines) * 5 + 10
         self.set_fill_color(255, 255, 255)
-        self.rect(10, 70, 95, bill_to_height, "DF")  # Moved up by 5 units
-        self.set_xy(15, 72)  # Moved up by 5 units
+        self.rect(10, 70, 95, bill_to_height, "DF")
+        self.set_xy(15, 72)
         self.set_font("Arial", "B", 10)
         self.cell(0, 5, "Bill To:", ln=True)
         self.set_font("Arial", "", 10)
-        self.set_xy(15, 77)  # Moved up by 5 units
+        self.set_xy(15, 77)
         self.multi_cell(85, 5, data["bill_to"])
 
         # Your DC No and EWay Bill Box
-        self.rect(105, 70, 95, bill_to_height, "DF")  # Moved up by 5 units
-        self.set_xy(110, 72)  # Moved up by 5 units
+        self.rect(105, 70, 95, bill_to_height, "DF")
+        self.set_xy(110, 72)
         self.set_font("Arial", "B", 10)
         self.cell(0, 5, f"Your DC No: {data['your_dc_no']}", align="L")
-        self.set_xy(110, 77)  # Moved up by 5 units
+        self.set_xy(110, 77)
         self.cell(0, 5, f"EWAY Bill No: {data['eway_bill_no']}", align="L")
 
         # Items table
         self.ln(5)
-        self.set_xy(10, bill_to_height + 77)  # Moved up by 5 units
-
+        self.set_xy(10, bill_to_height + 77)
         # Table headers
         self.set_fill_color(200, 200, 200)
         headers = ["S.No", "Description", "Qty", "Rate", "Amount"]
