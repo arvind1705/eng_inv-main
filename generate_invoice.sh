@@ -12,6 +12,12 @@ if [ -z "$2" ]; then
 else
     output_file="$desktop_path/INV12345_$2.pdf"
 fi
+
+# Login credentials
+USERNAME="vinodh944"
+PASSWORD="9449444452@123ABC"
+
+# Invoice details
 invoice_no="INV12345"
 invoice_date="2025-01-12"
 bill_to="ABC Corporation, 
@@ -24,9 +30,37 @@ your_dc_no="DC987654321"
 tax_rate=12
 tax_invoice_type="Original"
 
-# Start the curl command
+descriptions=("Widget A" "Widget B" "Widget C" "Widget D" "Widget E")
+
+# Perform login to get the session cookie
+login_response=$(curl -i -s -X POST http://127.0.0.1:8000/login \
+    -H 'Content-Type: application/x-www-form-urlencoded' \
+    -d "username=$USERNAME" \
+    -d "password=$PASSWORD")
+
+# Save login response for debugging
+# echo "$login_response" > login_debug.txt
+
+# Check if login was successful (look for redirect)
+# if ! echo "$login_response" | grep -q "302 Found"; then
+#     echo "Login failed. Please check your credentials."
+#     exit 1
+# fi
+
+# Extract the session cookie
+session_cookie=$(echo "$login_response" | grep 'Set-Cookie:' | grep 'session=' | sed -e 's/Set-Cookie: //' -e 's/;.*//')
+
+if [ -z "$session_cookie" ]; then
+    echo "Failed to retrieve session cookie. Check login_debug.txt for details."
+    exit 1
+fi
+
+echo "Login successful. Session cookie: $session_cookie"
+
+# Start the curl command for invoice generation
 curl_command="curl -X POST http://127.0.0.1:8000/generate \
 -H 'Content-Type: application/x-www-form-urlencoded' \
+-H 'Cookie: $session_cookie' \
 -d 'invoice_no=$invoice_no' \
 -d 'invoice_date=$invoice_date' \
 -d 'bill_to=$bill_to' \
@@ -36,8 +70,6 @@ curl_command="curl -X POST http://127.0.0.1:8000/generate \
 -d 'your_dc_no=$your_dc_no' \
 -d 'tax_rate=$tax_rate' \
 -d 'item_count=$item_count'"
-
-descriptions=("Widget A" "Widget B" "Widget C" "Widget D" "Widget E")
 
 # Loop over the item entries
 for ((i=0; i<item_count; i++)); do
