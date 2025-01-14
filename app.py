@@ -1,15 +1,19 @@
 """ Description: This script generates a PDF invoice using the FPDF library."""
 
 import os
-
-from flask import Flask, render_template, request, send_file
+from flask import Flask, render_template, request, redirect, url_for, session, send_file
 from fpdf import FPDF
 from werkzeug.utils import secure_filename
 from num2words import num2words
 
 app = Flask(__name__)
+app.secret_key = "your_secret_key"
 
 RS = "\u20B9"
+
+# Hardcoded credentials
+USERNAME = "vinodh944"
+PASSWORD = "9449444452@123ABC"
 
 
 class InvoicePDF(FPDF):
@@ -280,15 +284,40 @@ IFSC Code: CNRB0010651"""
         self.cell(0, 10, "", 0, 1, "R")  # Empty line for spacing
 
 
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    """This function handles user login."""
+    if request.method == "POST":
+        username = request.form["username"]
+        password = request.form["password"]
+        if username == USERNAME and password == PASSWORD:
+            session["logged_in"] = True
+            return redirect(url_for("index"))
+        else:
+            return render_template("login.html", error="Invalid credentials")
+    return render_template("login.html")
+
+
+@app.route("/logout")
+def logout():
+    """This function logs out the user."""
+    session.pop("logged_in", None)
+    return redirect(url_for("login"))
+
+
 @app.route("/")
 def index():
     """This function renders the form template."""
+    if not session.get("logged_in"):
+        return redirect(url_for("login"))
     return render_template("form.html")
 
 
 @app.route("/generate", methods=["POST"])
 def generate():
     """This function generates the PDF invoice using the provided data."""
+    if not session.get("logged_in"):
+        return redirect(url_for("login"))
     # pdf_path = 'invoice.pdf'
     try:
         data = {

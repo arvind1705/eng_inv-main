@@ -113,7 +113,12 @@
 </head>
 
 <body>
-    <h1 class="main-title">Ramesh Engineering</h1>
+    <header style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h1 class="main-title">Ramesh Engineering</h1>
+        <button onclick="logout()" style="background-color: #e74c3c; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; font-size: 14px;">
+            Logout
+        </button>
+    </header>
     <h2 class="subtitle">Invoice Form</h2>
     <form action="/generate" method="post">
         <div class="form-group">
@@ -216,6 +221,11 @@
                 itemToDelete.remove();
                 updateItemSequence();
             }
+        }
+        
+        function logout() {
+            // Redirect to the logout route
+            window.location.href = '/logout';
         }
         
         function updateItemSequence() {
