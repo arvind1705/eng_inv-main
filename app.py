@@ -1,15 +1,12 @@
 """ Description: This script generates a PDF invoice using the FPDF library."""
 
 import os
-from flask import Flask, render_template, request, redirect, url_for, session, send_file
+from flask import Flask, render_template, request, redirect, url_for, session
 from fpdf import FPDF
-from werkzeug.utils import secure_filename
 from num2words import num2words
 
 app = Flask(__name__)
 app.secret_key = "your_secret_key"
-
-RS = "\u20B9"
 
 # Hardcoded credentials
 USERNAME = "vinodh944"
@@ -52,30 +49,19 @@ class InvoicePDF(FPDF):
         self.cell(0, 5, f"TAX INVOICE - {self.data['tax_invoice_type']}", ln=True)
 
     def footer(self):
-        terms = """
-1. No returns or exchanges on sold goods.
-2. All disputes are subject to local jurisdiction only.
-3. Payment is due within 30 days of delivery.
-4. Guarantee excludes mishandling of components after delivery.
-"""
-        bank = """
-Bank Name: CANARA BANK
-A/C NAME: RAMESH ENGINEERING
-Account No: 04081010002140
-IFSC Code: CNRB0010651"""
         self.set_y(-36)
         self.set_font("Arial", "B", 10)
         self.cell(0, 10, "Terms and Conditions:", ln=0)
         self.set_font("Arial", "", 10)
         self.set_y(-30)
-        self.multi_cell(105, 5, terms)
+        self.multi_cell(105, 5, self.data["terms"])
 
         self.set_xy(130, -36)
         self.set_font("Arial", "B", 10)
         self.cell(0, 10, "Bank Details:", ln=0)
         self.set_font("Arial", "", 10)
         self.set_xy(130, -30)
-        self.multi_cell(0, 5, bank)
+        self.multi_cell(0, 5, self.data["bank"])
 
         # Draw a dark line below the footer
         self.set_line_width(0.6)
@@ -180,11 +166,11 @@ IFSC Code: CNRB0010651"""
             x += widths[2]
             self.set_xy(x, y)
             self.set_font("DejaVu", "", 10)
-            self.cell(widths[3], 10, f"{RS}{item['rate']:.2f}", 1, 0, "C")
+            self.cell(widths[3], 10, f"₹{item['rate']:.2f}", 1, 0, "C")
             x += widths[3]
             self.set_xy(x, y)
             self.set_font("DejaVu", "", 10)
-            self.cell(widths[4], 10, f"{RS}{total_amount:.2f}", 1, 0, "R")
+            self.cell(widths[4], 10, f"₹{total_amount:.2f}", 1, 0, "R")
             y += 10
 
         # Compute tax details
@@ -318,7 +304,6 @@ def generate():
     """This function generates the PDF invoice using the provided data."""
     if not session.get("logged_in"):
         return redirect(url_for("login"))
-    # pdf_path = 'invoice.pdf'
     try:
         data = {
             "invoice_no": request.form["invoice_no"],
@@ -331,13 +316,8 @@ def generate():
             "tax_invoice_type": request.form["tax_invoice_type"],
             "items": [],
         }
-        invoice_no = request.form["invoice_no"]
-        tax_invoice_type = request.form["tax_invoice_type"]
-        filename = secure_filename(f"{invoice_no}_{tax_invoice_type}.pdf")
-        pdf_path = filename
 
-        item_count = int(request.form["item_count"])
-        for i in range(item_count):
+        for i in range(int(request.form["item_count"])):
             data["items"].append(
                 {
                     "description": request.form[f"item_description_{i}"],
@@ -348,16 +328,15 @@ def generate():
 
             pdf = InvoicePDF(data=data)
             pdf.create_invoice(data)
-            pdf.output(pdf_path)
+            pdf.output("invoice.pdf")
 
-        return_data = send_file(pdf_path, as_attachment=True, download_name=filename)
-        return return_data
+        return send_file("invoice.pdf", as_attachment=True, download_name="invoice.pdf")
     finally:
         if os.name == "nt":
             pass
         else:
-            if os.path.exists(pdf_path):
-                os.remove(pdf_path)
+            if os.path.exists("invoice.pdf"):
+                os.remove("invoice.pdf")
 
 
 if __name__ == "__main__":
