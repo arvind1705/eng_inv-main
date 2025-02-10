@@ -113,7 +113,7 @@ IFSC Code: CNRB0010651"""
 
         # Billing address box
         bill_to_lines = self.multi_cell(85, 5, data["bill_to"], split_only=True)
-        bill_to_height = len(bill_to_lines) * 5 + 10
+        bill_to_height = len(bill_to_lines) * 5 + 10 + 5
         self.set_fill_color(255, 255, 255)
         self.rect(10, 70, 95, bill_to_height, "DF")
         self.set_xy(15, 72)
@@ -129,6 +129,8 @@ IFSC Code: CNRB0010651"""
         self.set_font("Arial", "B", 10)
         self.cell(0, 5, f"Your DC No: {data['your_dc_no']}", align="L")
         self.set_xy(110, 77)
+        self.cell(0, 5, f"Your DC Date: {data['your_dc_date']}", align="L")
+        self.set_xy(110, 82)
         self.cell(0, 5, f"EWAY Bill No: {data['eway_bill_no']}", align="L")
 
         # Items table
@@ -325,8 +327,9 @@ def generate():
             "invoice_date": request.form["invoice_date"],
             "bill_to": request.form["bill_to"],
             "terms": request.form.get("terms", ""),
-            "eway_bill_no": request.form["eway_bill_no"],
+            "eway_bill_no": request.form["eway_bill_no"] if request.form["eway_bill_no"] else "NA",
             "your_dc_no": request.form["your_dc_no"],
+            "your_dc_date": request.form["your_dc_date"],
             "tax_rate": request.form["tax_rate"],
             "tax_invoice_type": request.form["tax_invoice_type"],
             "items": [],
