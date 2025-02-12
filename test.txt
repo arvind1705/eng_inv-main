@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link id="favicon" rel="shortcut icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAYAAABw4pVUAAAACXBIWXMAAAsTAAALEwEAmpwYAAAMrUlEQVR4nO2deVQURx7He4/s8d7uvn1v/9iX3c1udt9mXYWRG0YUCZIwOIoCAmrwDuKdeBOiRoxKFBLkiCJEJd4kgprDkKgJ4epGMZ5o1it4UDU6VA+Ixgvwt69Kxww4DDPQM81If9/7Pbq7ipmu+vSvjq5f93CcIkWKFClSpEiRIkWKFClSpEiRIkWKFClS1K30McAvDtVhb15ECwWCPuNFdEYg2CAQ1MwTfI9u8yI6LYh4jyCiZUKd7sUv4Nyv5T7vp06C/uoLPEFrWeWLGGwygut5gnN4PfKUuxxOL8FwtS+92nmCWmwGYRYOKiqvr3WXu1xOpyMAzwgEL2HNkBQgWkNpEkS8prim5jdyl9MpJNTrnhcIPio5iDbGE3ycNoVyl7dbSyC4N0/wFXvDMOlfxAqx1l/ucndLVdRhH55g4jAYjw3d5InOV+7ydysd0euf5UWkczyMx81XndJ8PVIxwC95gkvlgvFT84VO8leu/Jbr6RJEnCw7jJ+arzSuJ0t4OKK6Kz+Ix17S3KPnKQLB22WH0MZ4gvZxPVGHRJ2LZDNwaYE8qKiv9eB6mniCV0ldmQV8MUwIHwKhKhfQuPS2aNGB/pC1Kae9piub60kCgJ/xBNVIDSQ29CWYPMQbdr0fCoXZlu3t6QMgVNUHPj1aaQYINlRD9a84ZxctRGWdbhBPUCpPcJkg4vO8iG7xIv5RIPgyHd5Sz+AJmi01jHLdZXbl783RQmPNuA4NnXiF5d+wa4f5psuAAzlnVfH1678TRJQgEKSXs/0fM/hliLPRQz47ZsZDmKEkzhlVUYfC2UxXRhDCI9stlMCE4VrQuPTpsA+JGugPWXm5lj5vN+dsM2w6kaKjErlBCCZWVH2UVXjZwnHQmDXvCStdMJ6lf3n62OP/OXDhNCxdkgijBgWCtq8rjAwaCAnzZtVrevV6nnOWTlkQ8UZbKsp4ZQp2BrJHKGXfc3RJnFkg9DhN31NZxvJ/XHIAogb0g23r0qD2UjXcu1sHtTXVsOX9dx8M8/K4GermEsJ1dwkizrS1ohwFZMf+fex7zq2YZhbI2RVTWfr2A/uYl4x8cSBUHy2Dlub6J+zUd6VAoWh79/4H110liFjbmYpyFJANhfnse1DqLLNA6HGavnpNCry1KAHyMlLMwjDah5kpzZF+3pu57qhKQv7Q2QUkRwHJysuFUNc+0JA51ywQepymRw/oB1r3vnD5wnGLQK7+cApiAgfcLzOgv3PdTTxBb3a2otoC0dgJUGpmGkR6uZmFYbQITzfYnJkC7745H5ruE4tA7vx4DQarXGHu9PimYV4ed4d6uN+MVPt+Fqx64V+yx0TRyV13B7I8eRnE+HrAlknhUDx/LANA/xqNHh/p6wkb05ItgjAa7egpkK1r0+A6Ogvk+kXYmZtJ4RhkhSKIeHBn5gWFwrfMjAAK29mXymZPmwxTg/wtesi0Qf6QvjSxXQi7Nq6FvIzVsGN9Bty7ozfbrG3LXtMUqfYpdJqFpC379nY4OdPYyeaFDLAIZEFoACyfM6ND76D9R35uptk0Uf8DaN1cW7Ruqnsj+vkdCXH571BHAzloC5BXoyNgxiB/OL40jpmxso63sy+VzQhSw7JhgywCSRoWBAsnjrGqyfrg3ZWQm7oC8tJXQUFedqu0+/cI3LqBoHz/XogNCrwV7uOVavcJILtZKOJ0QcS3bfUOOis2VoIRQGM7+1LZlEA/SBgcwPoKo5n2JXR/ZpAaxmuCrQJialWlRczMpTWIlyG6v/qO3TyF9hksmKwTHWv8yCiY8VL/VhXlKCCxak9YPzbMYp71Y4bC2OBAm4FQj8hJWQ6bs1Jh29o0uHv7eqv0ki8KIaqfb5WkIGi0OAts7uQox5x3ONLCPVSwLS7CYp6tr0ZApI+XzUBMTXf1f6zTNz12s6EWhrir7koaU8uL+BNzFX2nuYlZZ7zDUVbPJn29Yc/0GIv5aDqdHNIrvitQCjata7Xf2HBVWiB06bJLS6euHS+dahxgB+bGWgSyf04sy1dfV9MlIG2t9Mvd0jVZ9B6V6a106g1t1Z6H2LJ0WmhH25QczCqaT5xgEQhNp/muXDwpGQzaqb8SFHBL4/rfIdIAIfiYI5ZOG+1o3xVFsnM5mRRvEciJpZNZvtPHyrsMgvYb1DMojOE+XimdBgAA58AKNTbde6IPMfUeus2WTrXye8iaNwJZRf/wznSLQGg6zXe45Es4WVViVZRKezbM2xOi1L5VknkG1aN5RqfvH9FbJBMjhnapYBoJTZ822yIQfdrrLF9u/tZOl/mxEWzgpJTRU0yvfnOe0J5ut+lXaEE/f38ZtJw/6HDbm74Ehqhc4EZmxyMymi9jw7ouA+FFfJaTWlJGi8gJZOuKeRDj427VEDnaxwNWpa2WAAjaJTkQc8/yGb3DmrlHe0Ci1N6Pm5Hofj6tKs8eadlvTIdJAX5WAZkwwA+Sli3pMpBKEc+XHoiIsD08hG7Dg1vM6HaLSeXZIy111gSYFWzdpHRmcH9ImD+ny+U9pK/9jz2AVD0NQN6aEAOJ2kCrgLyhDYTX4id1rbkiuJSzh2h8lb2AfPTBWmbmKvYjidPmjNDCivBgq4DQfPGjoroKZJxdgNA4VnsAKXhvEWxY8hozut1iUnn2SIvTBEL6yMFWAUkfFQpjtSFdKy9BF+jzkZIDAYCfS/VsuJyjrNH9fWHj+GFWAaH5ogP8pbgIv6M3ZSWHUklQiNRAHD3KCnNXQX78CKuA0HxDPfpK0ioIIp7H2UO8iDOctVO/XV3E9unyrbmVwrarhknDBrH8ZboaCYCgxvK6ut/bJ4Ca4E+dEYj+UAHbN1Z8R0bz0fz7z56SxksMeIzkQIxQunJvS65R1sWDW9h+1eJJVgE5vGgiy/9JVYVUzZZ9H1/gSe1LtMNyllHW8b3r2XefeXuqVUDOvD2F5c//5itJgPAEVXP2Fh19VRjwQJ6g9wQRHRZEjOiz3G1PhrbDySkrIfblYBjc1xXGBAXAzlUL4c7pIoeNsMq3pj28gzsurFXESXuRJ7ljw1j+vE8KbK58czddbzfdb+HkkimUUlwDk2NGwKKpcfD9CR5+vKmDs6cqYfGUiTBJEwTbkxdA/uqETpmwM51VNv3b9rip0WPLJ49mFSymz7HKQwwZc1j+7G2bJGqyUKN8QER003gi76QmMxhtV9Ka74uwdEYcZC2YCiunjYNof18I9/GEpLhX4HLJdsk9ZFdqIgx3V1kFw2h0mJy2LsMqDzAnM8sU52QCgmuNJ0+bqe9P8maXN8+fqWJj/R3r00GPz4Een4f83AwYFaCG65W7JAWSlzQbYtVeNgEZrfaClatXStOHiEieOF8vL69nEhfOxZH91exRMBpOQ0P221tzvtWInzi2Mycdlk8dIymQzPnxEB+otglIXGA/WLw4scO+ouH+3U4t3jnEayJ8vLMS4yc20Suehufv3pwDzU0GmwID9Pg8DPVwg9kjtJIZnbVHevaFhNCBVhvNP274UPZMCTX6Zge+7qrtHkJwfXF9zR85RynExeW5SD/vIq2b6g6N+K7TXeh0lEZzkwEqDn7KRmNhnu6gUfVha/FdNY1rB2vtruZN66aC4WofZtEvBsDXF89YPcoyegt9j7BDYYR5uTfszMloold2V6P9tmenw/FDxXDpwgkWUU4fQd536ohEIx05DB1y6BtOqWfsWJ/eJFVAWUGbkP78D7Jg4eszu0HFdqIjJ/hKed3lv3COFG2mqGdIBaSljZFrF9ngwBk9w+EwHAFEj89BuK9PN6hgG15dLqKFsr1TPsLP+6vt2Wska7Ja2hido8ybMaUbVTgqoXMK+voo9hajh5Pg7+nNQ57g8Q4dTZmTRtWrV5iXWwOFIqWn6PE5BoOu2n1+okp+EA9vEDbYZUlWaoWq/v23CLX3Ptp8WRpaThj8MqvsRVMnsb+TtCHM6DZN05jkHe7rzTyjG8F4wIu6aO5pEC/qYuR6KxBPUAsvojxzd6Ft+QzBgKdzT5N4gufIBGQm/f5Kg24IL6IbNn8GwfUCwSO4p1EUiqM8haeeQdAs0+8Xrl37s0DQ+kc/SdEBCOpR6MPDYu1z3NMs2nzRtQG7whDRDYHgyPbOgc4PBAOexhP0OftZpIcjpdt0IkeP0Xhcnlz5K9dTRF9sLxBcbh/PwGWV9bp/yl1GpxN76xypnSjZ62AJulQhotH0c+Uum1OLRvVV1uGxvIi+sflN1vTX10T0NR2O2iU6sKfriF7/LI1fetTxfktXHulk7KfRDrrEi6hYEHEWb0Cxh27U/knuc1akSJEiRYoUKVKkSJEiRYoUKVKkSJEiRYq4J/R/58EzN9rw8OAAAAAASUVORK5CYII=">
+    <title>Ramesh Engineering - Invoice Form</title>
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #f5f6fa;
+            --text-color: #2c3e50;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f0f2f5;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        form {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        input[type="text"],
+        input[type="date"],
+        input[type="number"],
+        textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+
+        textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        .item {
+            background: var(--secondary-color);
+            padding: 20px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+        }
+
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #357abd;
+        }
+
+        button[type="button"] {
+            background-color: #6c757d;
+            margin-bottom: 20px;
+        }
+
+        button[type="submit"] {
+            display: block;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        h3 {
+            color: var(--primary-color);
+            margin-top: 30px;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+            
+            form {
+                padding: 15px;
+            }
+        }
+    </style>
+    <script src="https://cdn.ckeditor.com/4.22.1/basic/ckeditor.js"></script>
+</head>
+
+<body>
+    <header style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h1 class="main-title">Ramesh Engineering</h1>
+        <button onclick="logout()" style="background-color: #e74c3c; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; font-size: 14px;">
+            Logout
+        </button>
+    </header>
+    <h2 class="subtitle">Invoice Form</h2>
+    <form action="/generate" method="post">
+        <div class="form-group">
+            <label>Invoice No:</label>
+            <input type="text" name="invoice_no" required>
+        </div>
+        <div class="form-group">
+            <label>E-way Bill No:</label>
+            <input type="text" name="eway_bill_no">
+        </div>
+        <div class="form-group">
+            <label>Your DC No:</label>
+            <input type="text" name="your_dc_no" required>
+        </div>
+        <div class="form-group">
+            <label>Your DC Date:</label>
+            <input type="date" name="your_dc_date" required>
+        </div>
+        <div class="form-group">
+            <label>Invoice Date:</label>
+            <input type="date" name="invoice_date" required>
+        </div>
+        <div class="form-group">
+            <label>Bill To:</label>
+            <textarea name="bill_to" required></textarea>
+        </div>
+        <div class="form-group">
+            <label>Tax Rate (%):</label>
+            <select name="tax_rate" required style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; margin-bottom: 10px; box-sizing: border-box;">
+            <option value="12">12%</option>
+            <option value="18">18%</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Tax Invoice Type:</label>
+            <select name="tax_invoice_type" required style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; margin-bottom: 10px; box-sizing: border-box;">
+            <option value="Original">Original</option>
+            <option value="Duplicate">Duplicate</option>
+            </select>
+        </div>
+
+        <h3>Items</h3>
+        <div id="items">
+            <div class="item" id="item_0">
+            <label>Description:</label>
+            <textarea name="item_description_0" required></textarea>
+            <label>Quantity:</label>
+            <input type="number" name="item_quantity_0" required>
+            <label>Rate:</label>
+            <input type="number" name="item_rate_0" required>
+            <button type="button" onclick="deleteItem(0)">Delete</button>
+            </div>
+        </div>
+        <input type="hidden" name="item_count" value="1" id="item_count">
+        <button type="button" onclick="addItem()">Add Item</button>
+        <div class="form-group">
+            <h3>Bank details:</h3>
+            <p>. A/C Name:RAMESH ENGINEERING</p>
+            <p>. Bank Name: CANARA BANK</p>
+            <p>. IFSC Code:CNRB0010651</p>
+            <p>. Account number:04081010002140</p>
+        </div>
+
+        <div class="form-group">
+            <h3>Terms and Conditions</h3>
+            <p>1. Payment is due within 30 days from the date of invoice</p>
+            <p>2. Please make payment via bank transfer to the account details provided</p>
+            <p>3. Goods once sold cannot be returned</p>
+            <p>4. All disputes are subject to local jurisdiction only</p>
+            <input type="hidden" name="terms" value="1. Payment is due within 30 days from the date of invoice
+        2. Please make payment via bank transfer to the account details provided
+        3. Goods once sold cannot be returned
+        4. All disputes are subject to local jurisdiction only">
+        </div>
+        <button type="submit">Generate Invoice</button>
+    </form>
+
+    <script>
+        let itemCount = 1;
+        
+        function addItem() {
+            const itemsDiv = document.getElementById('items');
+            const newItem = document.createElement('div');
+            newItem.className = 'item';
+            newItem.setAttribute('id', `item_${itemCount}`);
+        
+            newItem.innerHTML = `
+                <label>Description:</label>
+                <textarea name="item_description_${itemCount}" required></textarea>
+                <label>Quantity:</label>
+                <input type="number" name="item_quantity_${itemCount}" required>
+                <label>Rate:</label>
+                <input type="number" name="item_rate_${itemCount}" required>
+                <button type="button" onclick="deleteItem(${itemCount})">Delete</button>
+            `;
+        
+            itemsDiv.appendChild(newItem);
+            CKEDITOR.replace(`item_description_${itemCount}`);
+            document.getElementById('item_count').value = ++itemCount;
+        }
+        
+        function deleteItem(index) {
+            const itemToDelete = document.getElementById(`item_${index}`);
+            if (itemToDelete) {
+                itemToDelete.remove();
+                updateItemSequence();
+            }
+        }
+        
+        function logout() {
+            // Redirect to the logout route
+            window.location.href = '/logout';
+        }
+        
+        function updateItemSequence() {
+            const items = document.querySelectorAll('#items .item');
+            itemCount = items.length; // Update the item count after deletion
+        
+            // Update the item count value for the form
+            document.getElementById('item_count').value = itemCount;
+        
+            // Renumber items and update their names and IDs
+            items.forEach((item, index) => {
+                const itemId = `item_${index}`;
+                item.setAttribute('id', itemId);
+        
+                const description = item.querySelector(`textarea[name^="item_description"]`);
+                const quantity = item.querySelector(`input[name^="item_quantity"]`);
+                const rate = item.querySelector(`input[name^="item_rate"]`);
+                const deleteButton = item.querySelector('button');
+        
+                if (description) {
+                    description.name = `item_description_${index}`;
+                    CKEDITOR.replace(description);
+                }
+                if (quantity) quantity.name = `item_quantity_${index}`;
+                if (rate) rate.name = `item_rate_${index}`;
+                if (deleteButton) deleteButton.setAttribute('onclick', `deleteItem(${index})`);
+            });
+        }
+        
+        CKEDITOR.replace('item_description_0');
+    </script>
+</body>
+
+</html>

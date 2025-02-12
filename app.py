@@ -159,7 +159,13 @@ IFSC Code: CNRB0010651"""
             total_amount = amount
             total += total_amount
 
-            if y > 250:  # Adjusted to leave space for footer. Changed from 250 to 260
+            # Calculate the height of the description cell based on the number of lines
+            description_lines = self.multi_cell(
+                widths[1], 6, item["description"], split_only=True
+            )
+            description_height = len(description_lines) * 6
+
+            if y + description_height > 250:  # Adjusted to leave space for footer
                 self.add_page()
                 y = 50
                 x = 10
@@ -172,22 +178,26 @@ IFSC Code: CNRB0010651"""
                 x = 10
 
             self.set_xy(x, y)
-            self.cell(widths[0], 10, str(idx), 1, 0, "C")
+            self.cell(widths[0], description_height, str(idx), 1, 0, "C")
             x += widths[0]
             self.set_xy(x, y)
-            self.cell(widths[1], 10, item["description"], 1)
+            self.multi_cell(widths[1], 6, item["description"], 1)
             x += widths[1]
             self.set_xy(x, y)
-            self.cell(widths[2], 10, str(item["quantity"]), 1, 0, "C")
+            self.cell(widths[2], description_height, str(item["quantity"]), 1, 0, "C")
             x += widths[2]
             self.set_xy(x, y)
             self.set_font("DejaVu", "", 10)
-            self.cell(widths[3], 10, f"{RS}{item['rate']:.2f}", 1, 0, "C")
+            self.cell(
+                widths[3], description_height, f"{RS}{item['rate']:.2f}", 1, 0, "C"
+            )
             x += widths[3]
             self.set_xy(x, y)
             self.set_font("DejaVu", "", 10)
-            self.cell(widths[4], 10, f"{RS}{total_amount:.2f}", 1, 0, "R")
-            y += 10
+            self.cell(
+                widths[4], description_height, f"{RS}{total_amount:.2f}", 1, 0, "R"
+            )
+            y += description_height
 
         # Compute tax details
         taxable_amount = round(total)
@@ -327,7 +337,9 @@ def generate():
             "invoice_date": request.form["invoice_date"],
             "bill_to": request.form["bill_to"],
             "terms": request.form.get("terms", ""),
-            "eway_bill_no": request.form["eway_bill_no"] if request.form["eway_bill_no"] else "NA",
+            "eway_bill_no": (
+                request.form["eway_bill_no"] if request.form["eway_bill_no"] else "NA"
+            ),
             "your_dc_no": request.form["your_dc_no"],
             "your_dc_date": request.form["your_dc_date"],
             "tax_rate": request.form["tax_rate"],
