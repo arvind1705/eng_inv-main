@@ -365,25 +365,43 @@ def generate():
             pdf.create_invoice(data)
             pdf.output(pdf_path)
 
-        # Modified send_file with explicit parameters to force download
-        return_data = send_file(
-            pdf_path,
-            mimetype='application/pdf',
-            as_attachment=True,
-            download_name=filename,
-            conditional=False
-        )
+        # Check if user is using Safari browser
+        user_agent = request.headers.get('User-Agent', '').lower()
+        is_safari = 'safari' in user_agent and not 'chrome' in user_agent
+            
+        # Modified send_file with Safari-specific parameters
+        if is_safari:
+            # Special handling for Safari
+            response = send_file(
+                pdf_path,
+                mimetype='application/octet-stream',  # Force binary download in Safari
+                as_attachment=True,
+                download_name=filename
+            )
+            
+            # Safari-specific headers
+            response.headers["Content-Disposition"] = f'attachment; filename="{filename}"'
+            response.headers["Content-Type"] = "application/octet-stream"
+        else:
+            # Standard handling for other browsers
+            response = send_file(
+                pdf_path,
+                mimetype='application/pdf',
+                as_attachment=True,
+                download_name=filename,
+                conditional=False
+            )
+            
+            response.headers["Content-Disposition"] = f'attachment; filename="{filename}"; filename*=UTF-8\'\'{filename}'
+            response.headers["Content-Type"] = "application/pdf"
+            
+        # Common headers for all browsers
+        response.headers["X-Content-Type-Options"] = "nosniff"
+        response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+        response.headers["Pragma"] = "no-cache"
+        response.headers["Expires"] = "0"
         
-        # Enhanced headers to force download in Safari
-        return_data.headers["Content-Disposition"] = f'attachment; filename="{filename}"; filename*=UTF-8\'\'{filename}'
-        return_data.headers["Content-Type"] = "application/pdf"
-        return_data.headers["X-Content-Type-Options"] = "nosniff"
-        # Add cache control headers to prevent browser caching
-        return_data.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
-        return_data.headers["Pragma"] = "no-cache"
-        return_data.headers["Expires"] = "0"
-        
-        return return_data
+        return response
     finally:
         if os.name == "nt":
             pass
