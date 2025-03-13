@@ -366,6 +366,7 @@ def generate():
             pdf.output(pdf_path)
 
         return_data = send_file(pdf_path, as_attachment=True, download_name=filename)
+        return_data.headers["Content-Disposition"] = f"attachment; filename={filename}"
         return return_data
     finally:
         if os.name == "nt":
