@@ -365,11 +365,24 @@ def generate():
             pdf.create_invoice(data)
             pdf.output(pdf_path)
 
-        return_data = send_file(pdf_path, as_attachment=True, download_name=filename)
-        # Add these headers to force download in Safari
-        return_data.headers["Content-Disposition"] = f"attachment; filename={filename}"
+        # Modified send_file with explicit parameters to force download
+        return_data = send_file(
+            pdf_path,
+            mimetype='application/pdf',
+            as_attachment=True,
+            download_name=filename,
+            conditional=False
+        )
+        
+        # Enhanced headers to force download in Safari
+        return_data.headers["Content-Disposition"] = f'attachment; filename="{filename}"; filename*=UTF-8\'\'{filename}'
         return_data.headers["Content-Type"] = "application/pdf"
         return_data.headers["X-Content-Type-Options"] = "nosniff"
+        # Add cache control headers to prevent browser caching
+        return_data.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+        return_data.headers["Pragma"] = "no-cache"
+        return_data.headers["Expires"] = "0"
+        
         return return_data
     finally:
         if os.name == "nt":
